@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stryker Bestellen Smart</title>
+</head>
+
+<body>
+
+  <h1>Stryker Bestellen Smart</h1>
+  <p id="status">Artikelstamm wird geladen...</p>
+
+  <div id="ausgabe"></div>
+
+  <script>
+    const API_URL = 'https://script.google.com/macros/s/AKfycbx9oXcfdmay6RtCI22A18t2TNGghcccYvSlBJ5pu0_E5E2jfSknkWMBqQAUFEhkm3Pv-w/exec';
+
+    async function artikelLaden() {
+      try {
+        const response = await fetch(API_URL);
+
+        if (!response.ok) {
+          throw new Error('HTTP-Fehler: ' + response.status);
+        }
+
+        const artikel = await response.json();
+
+        document.getElementById('status').textContent =
+          artikel.length + ' Datensätze erfolgreich geladen.';
+
+        const ausgabe = document.getElementById('ausgabe');
+
+        artikel.forEach(item => {
+          const zeile = document.createElement('p');
+
+          zeile.textContent =
+            item.artikelnummer + ' | ' +
+            item.bezeichnung + ' | ' +
+            item.barcode;
+
+          ausgabe.appendChild(zeile);
+        });
+
+      } catch (fehler) {
+        document.getElementById('status').textContent =
+          'Fehler beim Laden: ' + fehler.message;
+      }
+    }
+
+    artikelLaden();
+  </script>
+
+</body>
+</html>
