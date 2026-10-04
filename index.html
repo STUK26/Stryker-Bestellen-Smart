@@ -94,6 +94,12 @@
   </button>
 </div>
 
+<div id="einstellungenButtonBereich" style="margin-top:10px;">
+  <button type="button" onclick="einstellungenOeffnen()">
+    ⚙️ Einstellungen
+  </button>
+</div>
+
 <div id="verlaufAnsicht" style="display:none;">
   <p>
     <button type="button" onclick="verlaufSchliessen()">
@@ -109,7 +115,51 @@
 </div>
 
 
-  <div id="appFooter" style="margin-top:24px; text-align:center; font-size:12px; color:#666;">
+  <div id="einstellungenAnsicht" style="display:none;">
+  <p>
+    <button type="button" onclick="einstellungenSchliessen()">
+      ← Zurück
+    </button>
+  </p>
+
+  <h2>Einstellungen</h2>
+
+  <p>
+    <strong>VAN</strong><br>
+    <input
+      type="text"
+      id="einstellungenVan"
+      placeholder="z.B. VAN16"
+      autocomplete="off"
+      autocapitalize="characters"
+    >
+  </p>
+
+  <p>
+    <label>
+      <input type="checkbox" id="ccAktiv">
+      CC verwenden
+    </label>
+  </p>
+
+  <p>
+    <strong>CC E-Mail</strong><br>
+    <input
+      type="email"
+      id="ccEmail"
+      placeholder="name@firma.de"
+      autocomplete="email"
+    >
+  </p>
+
+  <p>
+    <button type="button" onclick="einstellungenSpeichern()">
+      Speichern
+    </button>
+  </p>
+</div>
+
+<div id="appFooter" style="margin-top:24px; text-align:center; font-size:12px; color:#666;">
     <div><span id="footerVan">VAN nicht gesetzt</span> • Version 0.4</div>
     <div id="status">Artikelstamm wird geladen...</div>
   </div>
@@ -129,6 +179,12 @@
     
     const VERLAUF_SPEICHER =
   'strykerBestellenSmart_verlauf';
+
+    const CC_AKTIV_SPEICHER =
+      'strykerBestellenSmart_cc_aktiv';
+
+    const CC_EMAIL_SPEICHER =
+      'strykerBestellenSmart_cc_email';
 
     const TEST_EMPFAENGER =
       'ukki62@gmail.com';
@@ -165,6 +221,94 @@
 
       return (localStorage.getItem(VAN_SPEICHER) || '').toUpperCase();
 
+    }
+
+
+    function einstellungenOeffnen() {
+      document.getElementById('einstellungenAnsicht').style.display = 'block';
+      document.getElementById('einstellungenButtonBereich').style.display = 'none';
+
+      Array.from(document.body.children).forEach(function(element) {
+        if (
+          element.id !== 'einstellungenAnsicht' &&
+          element.id !== 'einstellungenButtonBereich' &&
+          element.tagName !== 'SCRIPT'
+        ) {
+          element.dataset.vorEinstellungen = element.style.display || '';
+          element.style.display = 'none';
+        }
+      });
+
+      document.getElementById('einstellungenVan').value = vanHolen();
+      document.getElementById('ccAktiv').checked =
+        localStorage.getItem(CC_AKTIV_SPEICHER) === 'true';
+      document.getElementById('ccEmail').value =
+        localStorage.getItem(CC_EMAIL_SPEICHER) || '';
+
+      window.scrollTo(0, 0);
+    }
+
+
+    function einstellungenSchliessen() {
+      Array.from(document.body.children).forEach(function(element) {
+        if (
+          element.id !== 'einstellungenAnsicht' &&
+          element.id !== 'einstellungenButtonBereich' &&
+          element.tagName !== 'SCRIPT'
+        ) {
+          element.style.display = element.dataset.vorEinstellungen || '';
+          delete element.dataset.vorEinstellungen;
+        }
+      });
+
+      document.getElementById('einstellungenAnsicht').style.display = 'none';
+      document.getElementById('einstellungenButtonBereich').style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+
+
+    function einstellungenSpeichern() {
+      const van = document
+        .getElementById('einstellungenVan')
+        .value
+        .trim()
+        .toUpperCase();
+
+      const ccAktiv = document.getElementById('ccAktiv').checked;
+      const ccEmail = document.getElementById('ccEmail').value.trim();
+
+      if (!van) {
+        alert('Bitte VAN eingeben.');
+        return;
+      }
+
+      if (ccAktiv && !ccEmail) {
+        alert('Bitte eine CC E-Mail-Adresse eingeben.');
+        return;
+      }
+
+      if (ccAktiv && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ccEmail)) {
+        alert('Bitte eine gültige CC E-Mail-Adresse eingeben.');
+        return;
+      }
+
+      localStorage.setItem(VAN_SPEICHER, van);
+      localStorage.setItem(CC_AKTIV_SPEICHER, String(ccAktiv));
+      localStorage.setItem(CC_EMAIL_SPEICHER, ccEmail);
+
+      vanLaden();
+      document.getElementById('einstellungenVan').value = van;
+
+      alert('Einstellungen gespeichert.');
+    }
+
+
+    function ccHolen() {
+      if (localStorage.getItem(CC_AKTIV_SPEICHER) !== 'true') {
+        return '';
+      }
+
+      return localStorage.getItem(CC_EMAIL_SPEICHER) || '';
     }
 
 
@@ -792,11 +936,14 @@ function bestellungInOutlook() {
   mailtext +=
     '\nVielen Dank';
 
+  const cc = ccHolen();
+
   const mailto =
     'mailto:' +
     TEST_EMPFAENGER +
     '?subject=' +
     encodeURIComponent(betreff) +
+    (cc ? '&cc=' + encodeURIComponent(cc) : '') +
     '&body=' +
     encodeURIComponent(mailtext);
   
