@@ -130,7 +130,13 @@
      */
 
     function vanLaden() {
-      const van = localStorage.getItem(VAN_SPEICHER) || '';
+      let van = localStorage.getItem(VAN_SPEICHER) || '';
+
+      if (van) {
+        van = van.toUpperCase();
+        localStorage.setItem(VAN_SPEICHER, van);
+      }
+
       const footerVan = document.getElementById('footerVan');
 
       if (footerVan) {
@@ -141,7 +147,7 @@
 
     function vanHolen() {
 
-      return localStorage.getItem(VAN_SPEICHER) || '';
+      return (localStorage.getItem(VAN_SPEICHER) || '').toUpperCase();
 
     }
 
