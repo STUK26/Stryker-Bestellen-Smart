@@ -9,12 +9,24 @@
 <body>
 
   <h1>Stryker Bestellen Smart</h1>
+
   <p id="status">Artikelstamm wird geladen...</p>
 
-  <div id="ausgabe"></div>
+  <input
+    type="text"
+    id="suche"
+    placeholder="Artikelnummer oder Barcode"
+    autocomplete="off"
+  >
+
+  <button onclick="artikelSuchen()">Suchen</button>
+
+  <div id="ergebnis"></div>
 
   <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbx9oXcfdmay6RtCI22A18t2TNGghcccYvSlBJ5pu0_E5E2jfSknkWMBqQAUFEhkm3Pv-w/exec';
+    const API_URL = 'HIER-DEINE-BISHERIGE-WEB-APP-URL-EINFÜGEN';
+
+    let artikelstamm = [];
 
     async function artikelLaden() {
       try {
@@ -24,29 +36,56 @@
           throw new Error('HTTP-Fehler: ' + response.status);
         }
 
-        const artikel = await response.json();
+        artikelstamm = await response.json();
 
         document.getElementById('status').textContent =
-          artikel.length + ' Datensätze erfolgreich geladen.';
-
-        const ausgabe = document.getElementById('ausgabe');
-
-        artikel.forEach(item => {
-          const zeile = document.createElement('p');
-
-          zeile.textContent =
-            item.artikelnummer + ' | ' +
-            item.bezeichnung + ' | ' +
-            item.barcode;
-
-          ausgabe.appendChild(zeile);
-        });
+          artikelstamm.length + ' Datensätze geladen.';
 
       } catch (fehler) {
         document.getElementById('status').textContent =
           'Fehler beim Laden: ' + fehler.message;
       }
     }
+
+    function artikelSuchen() {
+      const suchwert = document
+        .getElementById('suche')
+        .value
+        .trim();
+
+      const ergebnis = document.getElementById('ergebnis');
+
+      if (!suchwert) {
+        ergebnis.textContent = 'https://script.google.com/macros/s/AKfycbx9oXcfdmay6RtCI22A18t2TNGghcccYvSlBJ5pu0_E5E2jfSknkWMBqQAUFEhkm3Pv-w/exec';
+        return;
+      }
+
+      const treffer = artikelstamm.find(item =>
+        item.artikelnummer === suchwert ||
+        item.barcode === suchwert
+      );
+
+      if (treffer) {
+        ergebnis.innerHTML =
+          '<p><strong>Artikelnummer:</strong> ' +
+          treffer.artikelnummer +
+          '</p>' +
+          '<p><strong>Bezeichnung:</strong> ' +
+          treffer.bezeichnung +
+          '</p>';
+      } else {
+        ergebnis.innerHTML =
+          '<p><strong>Artikel nicht bekannt.</strong></p>';
+      }
+    }
+
+    document
+      .getElementById('suche')
+      .addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+          artikelSuchen();
+        }
+      });
 
     artikelLaden();
   </script>
