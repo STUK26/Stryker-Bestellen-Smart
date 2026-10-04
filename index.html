@@ -390,7 +390,11 @@
 
       aktuellerArtikel = null;
 
-      document.getElementById('suche').focus();
+    if (istMobil()) {
+  document.getElementById('suche').blur();
+} else {
+  document.getElementById('suche').focus();
+}
 
     }
 
@@ -1202,13 +1206,20 @@ async function lichtUmschalten() {
     console.error(fehler);
     alert('Licht konnte nicht geschaltet werden.');
   }
+
+ function istMobil() {
+  return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+} 
+  
 }
     vanLaden();
 bestellungLaden();
 verlaufAnzeigen();
 artikelLaden();
 
-    document.getElementById('suche').focus();
+    if (!istMobil()) {
+  document.getElementById('suche').focus();
+}
 
   </script>
 
