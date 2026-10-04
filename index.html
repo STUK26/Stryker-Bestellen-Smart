@@ -23,14 +23,37 @@
 
   <div id="ergebnis"></div>
 
+  <hr>
+
+  <h2>Bestellung</h2>
+
+  <div id="bestellliste">
+    Noch keine Artikel in der Bestellung.
+  </div>
+
+
   <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbx9oXcfdmay6RtCI22A18t2TNGghcccYvSlBJ5pu0_E5E2jfSknkWMBqQAUFEhkm3Pv-w/exec';
+
+    const API_URL =
+      'https://script.google.com/macros/s/AKfycbx9oXcfdmay6RtCI22A18t2TNGghcccYvSlBJ5pu0_E5E2jfSknkWMBqQAUFEhkm3Pv-w/exec';
 
     let artikelstamm = [];
     let unbekannterBarcode = '';
+    let aktuellerArtikel = null;
+
+    let bestellung = [];
+
+
+    /*
+     * =====================================================
+     * ARTIKELSTAMM LADEN
+     * =====================================================
+     */
 
     async function artikelLaden() {
+
       try {
+
         const response = await fetch(API_URL);
 
         if (!response.ok) {
@@ -43,12 +66,23 @@
           artikelstamm.length + ' Datensätze geladen.';
 
       } catch (fehler) {
+
         document.getElementById('status').textContent =
           'Fehler beim Laden: ' + fehler.message;
+
       }
+
     }
 
+
+    /*
+     * =====================================================
+     * ARTIKEL SUCHEN
+     * =====================================================
+     */
+
     function artikelSuchen() {
+
       const suchwert = document
         .getElementById('suche')
         .value
@@ -57,7 +91,7 @@
       const ergebnis = document.getElementById('ergebnis');
 
       if (!suchwert) {
-        ergebnis.textContent = 'Bitte Artikelnummer oder Barcode eingeben.';
+        ergebnis.innerHTML = '';
         return;
       }
 
@@ -66,37 +100,199 @@
         item.barcode === suchwert
       );
 
+
+      /*
+       * ARTIKEL GEFUNDEN
+       */
+
       if (treffer) {
-        unbekannterBarcode = '';
+
+        aktuellerArtikel = treffer;
 
         ergebnis.innerHTML =
           '<p><strong>Artikelnummer:</strong> ' +
           treffer.artikelnummer +
           '</p>' +
+
           '<p><strong>Bezeichnung:</strong> ' +
           treffer.bezeichnung +
-          '</p>';
+          '</p>' +
+
+          '<p>' +
+          '<label>Menge: </label>' +
+          '<input type="number" id="menge" value="1" min="1" style="width:60px;">' +
+          '</p>' +
+
+          '<button onclick="zurBestellung()">Zur Bestellung</button>';
+
+        return;
+      }
+
+
+      /*
+       * ARTIKEL NICHT GEFUNDEN
+       */
+
+      aktuellerArtikel = null;
+      unbekannterBarcode = suchwert;
+
+      ergebnis.innerHTML =
+        '<p><strong>Artikel nicht bekannt.</strong></p>' +
+
+        '<p>Barcode: ' +
+        unbekannterBarcode +
+        '</p>' +
+
+        '<button onclick="artikelAufnehmen()">Artikel aufnehmen</button>';
+
+    }
+
+
+    /*
+     * =====================================================
+     * ARTIKEL ZUR BESTELLUNG
+     * =====================================================
+     */
+
+    function zurBestellung() {
+
+      if (!aktuellerArtikel) {
+        return;
+      }
+
+      const mengeFeld = document.getElementById('menge');
+
+      const menge = parseInt(mengeFeld.value, 10);
+
+      if (!menge || menge < 1) {
+        alert('Bitte eine gültige Menge eingeben.');
+        return;
+      }
+
+
+      /*
+       * Prüfen, ob Artikel bereits im Bestellkorb liegt
+       */
+
+      const vorhanden = bestellung.find(item =>
+        item.artikelnummer === aktuellerArtikel.artikelnummer
+      );
+
+
+      /*
+       * Wenn vorhanden -> Menge addieren
+       */
+
+      if (vorhanden) {
+
+        vorhanden.menge += menge;
 
       } else {
-        unbekannterBarcode = suchwert;
 
-        ergebnis.innerHTML =
-          '<p><strong>Artikel nicht bekannt.</strong></p>' +
-          '<p>Barcode: ' + unbekannterBarcode + '</p>' +
-          '<button onclick="vorschlagStarten()">Artikel aufnehmen</button>';
+        bestellung.push({
+          artikelnummer: aktuellerArtikel.artikelnummer,
+          bezeichnung: aktuellerArtikel.bezeichnung,
+          menge: menge
+        });
+
       }
+
+
+      bestellungAnzeigen();
+
+
+      /*
+       * Suche für nächsten Artikel vorbereiten
+       */
+
+      document.getElementById('suche').value = '';
+      document.getElementById('ergebnis').innerHTML = '';
+
+      aktuellerArtikel = null;
+
+      document.getElementById('suche').focus();
+
     }
 
-    function vorschlagStarten() {
-      document.getElementById('ergebnis').innerHTML =
-        '<p><strong>Neuen Artikel aufnehmen</strong></p>' +
-        '<p>Barcode: ' + unbekannterBarcode + '</p>' +
-        '<input type="text" id="neueArtikelnummer" placeholder="Artikelnummer">' +
-        '<br><br>' +
-        '<button onclick="artikelnummerPruefen()">Weiter</button>';
+
+    /*
+     * =====================================================
+     * BESTELLLISTE ANZEIGEN
+     * =====================================================
+     */
+
+    function bestellungAnzeigen() {
+
+      const bereich = document.getElementById('bestellliste');
+
+      if (bestellung.length === 0) {
+
+        bereich.innerHTML =
+          'Noch keine Artikel in der Bestellung.';
+
+        return;
+      }
+
+
+      let html = '';
+
+      bestellung.forEach(item => {
+
+        html +=
+          '<p>' +
+          '<strong>' + item.menge + ' x</strong> ' +
+          item.artikelnummer +
+          ' – ' +
+          item.bezeichnung +
+          '</p>';
+
+      });
+
+      bereich.innerHTML = html;
+
     }
+
+
+    /*
+     * =====================================================
+     * UNBEKANNTEN ARTIKEL AUFNEHMEN
+     * =====================================================
+     */
+
+    function artikelAufnehmen() {
+
+      const ergebnis = document.getElementById('ergebnis');
+
+      ergebnis.innerHTML =
+        '<h3>Neuen Artikel aufnehmen</h3>' +
+
+        '<p>Barcode: ' +
+        unbekannterBarcode +
+        '</p>' +
+
+        '<input ' +
+        'type="text" ' +
+        'id="neueArtikelnummer" ' +
+        'placeholder="Artikelnummer" ' +
+        'autocomplete="off">' +
+
+        '<p><button onclick="artikelnummerPruefen()">Weiter</button></p>';
+
+      document
+        .getElementById('neueArtikelnummer')
+        .focus();
+
+    }
+
+
+    /*
+     * =====================================================
+     * ARTIKELNUMMER PRÜFEN
+     * =====================================================
+     */
 
     function artikelnummerPruefen() {
+
       const artikelnummer = document
         .getElementById('neueArtikelnummer')
         .value
@@ -107,35 +303,108 @@
         return;
       }
 
-      const vorhandenerArtikel = artikelstamm.find(item =>
+
+      const bekannterArtikel = artikelstamm.find(item =>
         item.artikelnummer === artikelnummer
       );
 
-      if (vorhandenerArtikel) {
-        document.getElementById('ergebnis').innerHTML =
-          '<p><strong>Artikel bereits bekannt:</strong></p>' +
-          '<p>Artikelnummer: ' + vorhandenerArtikel.artikelnummer + '</p>' +
-          '<p>Bezeichnung: ' + vorhandenerArtikel.bezeichnung + '</p>' +
-          '<p>Neuer Barcode: ' + unbekannterBarcode + '</p>' +
-          '<button onclick="vorschlagSenden(\'' +
-          vorhandenerArtikel.artikelnummer +
+
+      /*
+       * ARTIKELNUMMER BEREITS BEKANNT
+       */
+
+      if (bekannterArtikel) {
+
+        const ergebnis = document.getElementById('ergebnis');
+
+        ergebnis.innerHTML =
+          '<h3>Artikel bereits bekannt:</h3>' +
+
+          '<p>Artikelnummer: ' +
+          bekannterArtikel.artikelnummer +
+          '</p>' +
+
+          '<p>Bezeichnung: ' +
+          bekannterArtikel.bezeichnung +
+          '</p>' +
+
+          '<p>Neuer Barcode: ' +
+          unbekannterBarcode +
+          '</p>' +
+
+          '<button onclick="barcodeVorschlagen(\'' +
+          bekannterArtikel.artikelnummer +
           '\', \'' +
-          vorhandenerArtikel.bezeichnung.replace(/'/g, "\\'") +
+          encodeURIComponent(bekannterArtikel.bezeichnung) +
           '\')">Barcode vorschlagen</button>';
 
-      } else {
-        document.getElementById('ergebnis').innerHTML =
-          '<p><strong>Neue Artikelnummer</strong></p>' +
-          '<p>Artikelnummer: ' + artikelnummer + '</p>' +
-          '<input type="text" id="neueBezeichnung" placeholder="Bezeichnung">' +
-          '<br><br>' +
-          '<button onclick="neuenArtikelSenden(\'' +
-          artikelnummer +
-          '\')">Vorschlag senden</button>';
+        return;
       }
+
+
+      /*
+       * NEUE ARTIKELNUMMER
+       */
+
+      const ergebnis = document.getElementById('ergebnis');
+
+      ergebnis.innerHTML =
+        '<h3>Neuer Artikel</h3>' +
+
+        '<p>Artikelnummer: ' +
+        artikelnummer +
+        '</p>' +
+
+        '<p>Barcode: ' +
+        unbekannterBarcode +
+        '</p>' +
+
+        '<input ' +
+        'type="text" ' +
+        'id="neueBezeichnung" ' +
+        'placeholder="Bezeichnung" ' +
+        'autocomplete="off">' +
+
+        '<p>' +
+        '<button onclick="neuenArtikelVorschlagen(\'' +
+        artikelnummer +
+        '\')">Artikel vorschlagen</button>' +
+        '</p>';
+
     }
 
-    function neuenArtikelSenden(artikelnummer) {
+
+    /*
+     * =====================================================
+     * NEUEN BARCODE VORSCHLAGEN
+     * =====================================================
+     */
+
+    async function barcodeVorschlagen(
+      artikelnummer,
+      bezeichnungEncoded
+    ) {
+
+      const bezeichnung =
+        decodeURIComponent(bezeichnungEncoded);
+
+      await vorschlagSenden(
+        artikelnummer,
+        bezeichnung,
+        unbekannterBarcode
+      );
+
+    }
+
+
+    /*
+     * =====================================================
+     * NEUEN ARTIKEL VORSCHLAGEN
+     * =====================================================
+     */
+
+    async function neuenArtikelVorschlagen(artikelnummer) {
+
       const bezeichnung = document
         .getElementById('neueBezeichnung')
         .value
@@ -146,47 +415,107 @@
         return;
       }
 
-      vorschlagSenden(artikelnummer, bezeichnung);
+      await vorschlagSenden(
+        artikelnummer,
+        bezeichnung,
+        unbekannterBarcode
+      );
+
     }
 
-    async function vorschlagSenden(artikelnummer, bezeichnung) {
-      const daten = {
-        van: 'VAN16',
-        artikelnummer: artikelnummer,
-        bezeichnung: bezeichnung,
-        barcode: unbekannterBarcode
-      };
+
+    /*
+     * =====================================================
+     * VORSCHLAG AN GOOGLE SENDEN
+     * =====================================================
+     */
+
+    async function vorschlagSenden(
+      artikelnummer,
+      bezeichnung,
+      barcode
+    ) {
+
+      const ergebnis = document.getElementById('ergebnis');
 
       try {
+
         const response = await fetch(API_URL, {
+
           method: 'POST',
-          body: JSON.stringify(daten)
+
+          body: JSON.stringify({
+            van: 'VAN16',
+            artikelnummer: artikelnummer,
+            bezeichnung: bezeichnung,
+            barcode: barcode
+          })
+
         });
+
+
+        if (!response.ok) {
+          throw new Error('HTTP-Fehler: ' + response.status);
+        }
+
 
         const antwort = await response.json();
 
-        if (antwort.erfolg) {
-          document.getElementById('ergebnis').innerHTML =
-            '<p><strong>Vorschlag gespeichert.</strong></p>';
+
+        if (antwort.bereitsVorhanden) {
+
+          ergebnis.innerHTML =
+            '<p><strong>Vorschlag bereits vorhanden.</strong></p>';
+
         } else {
-          throw new Error('Vorschlag konnte nicht gespeichert werden.');
+
+          ergebnis.innerHTML =
+            '<p><strong>Vorschlag gespeichert.</strong></p>';
+
         }
 
+
       } catch (fehler) {
-        document.getElementById('ergebnis').textContent =
-          'Fehler: ' + fehler.message;
+
+        ergebnis.innerHTML =
+          '<p><strong>Fehler beim Speichern:</strong> ' +
+          fehler.message +
+          '</p>';
+
       }
+
     }
+
+
+    /*
+     * =====================================================
+     * ENTER-TASTE / SCANNER
+     * =====================================================
+     */
 
     document
       .getElementById('suche')
       .addEventListener('keydown', function(event) {
+
         if (event.key === 'Enter') {
+
+          event.preventDefault();
+
           artikelSuchen();
+
         }
+
       });
 
+
+    /*
+     * =====================================================
+     * START
+     * =====================================================
+     */
+
     artikelLaden();
+
   </script>
 
 </body>
