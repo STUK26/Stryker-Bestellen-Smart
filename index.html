@@ -1080,109 +1080,94 @@ window.location.href = mailto;
 
 let kameraStream = null;
 let barcodeReader = null;
-let letzterBarcode = '';
-    
-async function kameraOeffnen() {
-  try {
-    kameraStream = await navigator.mediaDevices.getUserMedia({
-      video: {
-        facingMode: { ideal: 'environment' }
-      },
-      audio: false
-    });
-
-    const video = document.getElementById('video');
-    video.srcObject = kameraStream;
-    await video.play();
-
-    document.getElementById('cameraBox').style.display = 'block';
-const hints = new Map();
-
-hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, [
-  ZXing.BarcodeFormat.CODE_128,
-  ZXing.BarcodeFormat.CODE_39,
-  ZXing.BarcodeFormat.EAN_13,
-  ZXing.BarcodeFormat.EAN_8,
-  ZXing.BarcodeFormat.UPC_A,
-  ZXing.BarcodeFormat.UPC_E,
-  ZXing.BarcodeFormat.ITF
-]);
-
-barcodeReader = new ZXing.BrowserBarcodeReader(250, hints);
-
 let scanBereit = false;
 
-const scanTrigger = document.getElementById('scanTrigger');
-
-scanTrigger.onclick = function () {
-  scanBereit = true;
-  scanTrigger.disabled = true;
-  scanTrigger.textContent = 'SCANNEN…';
-};
-
-barcodeReader.decodeFromVideoElement(
-  document.getElementById('video'),
-  function (ergebnis, fehler) {
-
-    if (!ergebnis || !scanBereit) {
+async function kameraOeffnen() {
+  try {
+    if (typeof ZXing === 'undefined') {
+      alert('Barcode-Scanner konnte nicht geladen werden.');
       return;
     }
 
-    const barcode = String(ergebnis.text || '').trim();
+    document.getElementById('cameraBox').style.display = 'block';
 
-    if (!barcode) {
-      return;
-    }
+    const hints = new Map();
+    hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, [
+      ZXing.BarcodeFormat.CODE_128,
+      ZXing.BarcodeFormat.CODE_39,
+      ZXing.BarcodeFormat.EAN_13,
+      ZXing.BarcodeFormat.EAN_8,
+      ZXing.BarcodeFormat.UPC_A,
+      ZXing.BarcodeFormat.UPC_E,
+      ZXing.BarcodeFormat.ITF
+    ]);
 
+    barcodeReader = new ZXing.BrowserBarcodeReader(250, hints);
     scanBereit = false;
-    letzterBarcode = barcode;
 
-    document.getElementById('suche').value = barcode;
+    const video = document.getElementById('video');
+    const scanTrigger = document.getElementById('scanTrigger');
 
     scanTrigger.disabled = false;
     scanTrigger.textContent = '📷 SCANNEN';
 
-    artikelSuchen();
-  }
-);
-    
-  try {
-    const video = document.getElementById('video');
+    scanTrigger.onclick = function () {
+      scanBereit = true;
+      scanTrigger.disabled = true;
+      scanTrigger.textContent = 'SCANNEN…';
+    };
 
-    const ergebnis = await barcodeReader.decodeOnceFromVideoElement(video);
-    const barcode = String(ergebnis.text || '').trim();
+    barcodeReader.decodeFromVideoDevice(
+      undefined,
+      video,
+      function (ergebnis, fehler) {
+        if (!ergebnis || !scanBereit) return;
 
-    if (!barcode) {
-      return;
-    }
+        const barcode = String(ergebnis.text || '').trim();
+        if (!barcode) return;
+        if (!/^[A-Za-z0-9-]{3,32}$/.test(barcode)) return;
 
-    letzterBarcode = barcode;
+        scanBereit = false;
+        document.getElementById('suche').value = barcode;
+        scanTrigger.disabled = false;
+        scanTrigger.textContent = '📷 SCANNEN';
+        artikelSuchen();
+      }
+    );
 
-    document.getElementById('suche').value = barcode;
-    artikelSuchen();
-
-  } catch (fehler) {
-    console.error(fehler);
-    alert('Barcode konnte nicht erkannt werden.');
-  }
-};
-    
   } catch (fehler) {
     console.error(fehler);
     alert('Kamera konnte nicht geöffnet werden.');
+    kameraSchliessen();
   }
 }
 
-function kameraSchliessen() {
-  if (kameraStream) {
-    kameraStream.getTracks().forEach(track => track.stop());
-    kameraStream = null;
+async function kameraSchliessen() {
+  scanBereit = false;
+
+  if (barcodeReader) {
+    try { barcodeReader.reset(); } catch (fehler) {}
+    barcodeReader = null;
   }
 
-  document.getElementById('video').srcObject = null;
+  const video = document.getElementById('video');
+  if (video && video.srcObject) {
+    video.srcObject.getTracks().forEach(function (track) {
+      track.stop();
+    });
+    video.srcObject = null;
+  }
+
+  kameraStream = null;
   document.getElementById('cameraBox').style.display = 'none';
+
+  const scanTrigger = document.getElementById('scanTrigger');
+  scanTrigger.disabled = false;
+  scanTrigger.textContent = '📷 SCANNEN';
+
+  document.getElementById('suche').focus();
 }
-    
+
     vanLaden();
 bestellungLaden();
 verlaufAnzeigen();
