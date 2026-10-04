@@ -88,10 +88,24 @@
 
   <hr>
 
-<h2>Verlauf</h2>
+<div id="verlaufButtonBereich">
+  <button type="button" onclick="verlaufOeffnen()">
+    📋 Verlauf
+  </button>
+</div>
 
-<div id="verlauf">
-  Noch keine Bestellung an Outlook übergeben.
+<div id="verlaufAnsicht" style="display:none;">
+  <p>
+    <button type="button" onclick="verlaufSchliessen()">
+      ← Zurück zur Bestellung
+    </button>
+  </p>
+
+  <h2>Bestellverlauf</h2>
+
+  <div id="verlauf">
+    Noch keine Bestellung an Outlook übergeben.
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.18.6/umd/index.min.js"></script>
@@ -617,6 +631,42 @@ function neueBestellung() {
 
 }
     
+function verlaufOeffnen() {
+  document.getElementById('verlaufAnsicht').style.display = 'block';
+  document.getElementById('verlaufButtonBereich').style.display = 'none';
+
+  Array.from(document.body.children).forEach(function(element) {
+    if (
+      element.id !== 'verlaufAnsicht' &&
+      element.id !== 'verlaufButtonBereich' &&
+      element.tagName !== 'SCRIPT'
+    ) {
+      element.dataset.vorVerlauf = element.style.display || '';
+      element.style.display = 'none';
+    }
+  });
+
+  verlaufAnzeigen();
+  window.scrollTo(0, 0);
+}
+
+function verlaufSchliessen() {
+  Array.from(document.body.children).forEach(function(element) {
+    if (
+      element.id !== 'verlaufAnsicht' &&
+      element.id !== 'verlaufButtonBereich' &&
+      element.tagName !== 'SCRIPT'
+    ) {
+      element.style.display = element.dataset.vorVerlauf || '';
+      delete element.dataset.vorVerlauf;
+    }
+  });
+
+  document.getElementById('verlaufAnsicht').style.display = 'none';
+  document.getElementById('verlaufButtonBereich').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
 /*
  * =====================================================
  * BESTELLUNG IM VERLAUF SPEICHERN
@@ -1207,11 +1257,13 @@ async function lichtUmschalten() {
     alert('Licht konnte nicht geschaltet werden.');
   }
 
- function istMobil() {
+ }
+
+function istMobil() {
   return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 } 
   
-}
+
     vanLaden();
 bestellungLaden();
 verlaufAnzeigen();
