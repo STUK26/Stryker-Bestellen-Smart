@@ -57,6 +57,19 @@
 
   <hr>
 
+  <div id="bestellungButtonBereich">
+  <button type="button" id="bestellungBtn" onclick="bestellungOeffnen()">
+    🛒 Bestellung (0)
+  </button>
+</div>
+
+<div id="bestellungAnsicht" style="display:none;">
+  <p>
+    <button type="button" onclick="bestellungSchliessen()">
+      ← Zurück
+    </button>
+  </p>
+
   <h2>Bestellung</h2>
 
   <div id="bestellliste">
@@ -64,21 +77,17 @@
   </div>
 
   <p>
-  
+    <button onclick="bestellungInOutlook()">
+      In Outlook öffnen
+    </button>
 
-  <button onclick="bestellungInOutlook()">
-    In Outlook öffnen
-  </button>
+    <button onclick="neueBestellung()">
+      Neue Bestellung
+    </button>
+  </p>
+</div>
 
-<button onclick="neueBestellung()">
-  Neue Bestellung
-</button>
-    
-</p>
-
-  
-
-  <hr>
+<hr>
 
 <div id="verlaufButtonBereich">
   <button type="button" onclick="verlaufOeffnen()">
@@ -393,6 +402,54 @@
     }
 
 
+    function bestellungOeffnen() {
+      document.getElementById('bestellungAnsicht').style.display = 'block';
+      document.getElementById('bestellungButtonBereich').style.display = 'none';
+
+      Array.from(document.body.children).forEach(function(element) {
+        if (
+          element.id !== 'bestellungAnsicht' &&
+          element.id !== 'bestellungButtonBereich' &&
+          element.tagName !== 'SCRIPT'
+        ) {
+          element.dataset.vorBestellung = element.style.display || '';
+          element.style.display = 'none';
+        }
+      });
+
+      bestellungAnzeigen();
+      window.scrollTo(0, 0);
+    }
+
+
+    function bestellungSchliessen() {
+      Array.from(document.body.children).forEach(function(element) {
+        if (
+          element.id !== 'bestellungAnsicht' &&
+          element.id !== 'bestellungButtonBereich' &&
+          element.tagName !== 'SCRIPT'
+        ) {
+          element.style.display = element.dataset.vorBestellung || '';
+          delete element.dataset.vorBestellung;
+        }
+      });
+
+      document.getElementById('bestellungAnsicht').style.display = 'none';
+      document.getElementById('bestellungButtonBereich').style.display = 'block';
+      bestellungButtonAktualisieren();
+      window.scrollTo(0, 0);
+    }
+
+
+    function bestellungButtonAktualisieren() {
+      const button = document.getElementById('bestellungBtn');
+
+      if (button) {
+        button.textContent = '🛒 Bestellung (' + bestellung.length + ')';
+      }
+    }
+
+
     /*
      * =====================================================
      * BESTELLLISTE
@@ -400,6 +457,8 @@
      */
 
     function bestellungAnzeigen() {
+
+      bestellungButtonAktualisieren();
 
       const bereich =
         document.getElementById('bestellliste');
