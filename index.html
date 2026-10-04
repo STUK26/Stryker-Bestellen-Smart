@@ -70,9 +70,7 @@
   </div>
 
   <p>
-  <button onclick="bestellungVorbereiten()">
-    Bestellung vorbereiten
-  </button>
+  
 
   <button onclick="bestellungInOutlook()">
     In Outlook öffnen
@@ -84,7 +82,7 @@
     
 </p>
 
-  <div id="mailVorschau"></div>
+  
 
   <hr>
 
@@ -400,7 +398,6 @@
 
       document.getElementById('suche').value = '';
       document.getElementById('ergebnis').innerHTML = '';
-      document.getElementById('mailVorschau').innerHTML = '';
 
       aktuellerArtikel = null;
 
@@ -495,7 +492,6 @@
 
       bestellungSpeichern();
 
-      document.getElementById('mailVorschau').innerHTML = '';
 
     }
 
@@ -507,94 +503,11 @@
       bestellungSpeichern();
       bestellungAnzeigen();
 
-      document.getElementById('mailVorschau').innerHTML = '';
 
     }
 
 
     /*
-     * =====================================================
-     * BESTELLMAIL VORSCHAU
-     * =====================================================
-     */
-
-    function bestellungVorbereiten() {
-
-      const van = vanHolen();
-
-      if (!van) {
-
-        alert('Bitte zuerst VAN speichern.');
-
-        document.getElementById('van').focus();
-
-        return;
-
-      }
-
-
-      if (bestellung.length === 0) {
-
-        alert('Die Bestellung ist leer.');
-
-        return;
-
-      }
-
-
-      const betreff =
-        'Bestellung ' + van;
-
-
-      let mailtext =
-        'Hallo zusammen,\n\n' +
-        'bitte folgende Artikel für ' +
-        van +
-        ' bestellen:\n\n';
-
-
-      bestellung.forEach(item => {
-
-        mailtext +=
-          item.menge +
-          ' x ' +
-          item.artikelnummer +
-          ' – ' +
-          item.bezeichnung +
-          '\n';
-
-      });
-
-
-      mailtext +=
-        '\nVielen Dank';
-
-
-      const vorschau =
-        document.getElementById('mailVorschau');
-
-
-      vorschau.innerHTML =
-        '<hr>' +
-
-        '<h2>Mail-Vorschau</h2>' +
-
-        '<p><strong>An:</strong> ' +
-        TEST_EMPFAENGER +
-        '</p>' +
-
-        '<p><strong>Betreff:</strong> ' +
-        betreff +
-        '</p>' +
-
-        '<p><strong>Text:</strong></p>' +
-
-        '<pre style="white-space:pre-wrap;">' +
-        mailtext +
-        '</pre>';
-
-    }
-/*
  * =====================================================
  * NEUE BESTELLUNG
  * =====================================================
@@ -620,7 +533,6 @@ function neueBestellung() {
   bestellungSpeichern();
   bestellungAnzeigen();
 
-  document.getElementById('mailVorschau').innerHTML = '';
 
   document.getElementById('suche').value = '';
   document.getElementById('ergebnis').innerHTML = '';
