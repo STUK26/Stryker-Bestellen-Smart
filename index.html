@@ -698,13 +698,15 @@ function bestellungImVerlaufSpeichern() {
 
   }
 
-  verlauf.unshift({
-    datum: new Date().toISOString(),
-    van: van,
-    status: 'An Outlook übergeben',
-    artikel: JSON.parse(JSON.stringify(bestellung))
-  });
+verlauf.unshift({
+  datum: new Date().toISOString(),
+  van: van,
+  status: 'An Outlook übergeben',
+  artikel: JSON.parse(JSON.stringify(bestellung))
+});
 
+verlauf = verlauf.slice(0, 50);
+  
   localStorage.setItem(
     VERLAUF_SPEICHER,
     JSON.stringify(verlauf)
