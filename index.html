@@ -36,6 +36,10 @@
 
   <button onclick="artikelSuchen()">Suchen</button>
 
+<button id="cameraBtn" onclick="kameraOeffnen()">
+  📷 Barcode scannen
+</button>
+  
   <div id="ergebnis"></div>
 
   <hr>
@@ -1057,6 +1061,10 @@ window.location.href = mailto;
      * =====================================================
      */
 
+function kameraOeffnen() {
+  alert('Kamera funktioniert');
+}
+    
     vanLaden();
 bestellungLaden();
 verlaufAnzeigen();
