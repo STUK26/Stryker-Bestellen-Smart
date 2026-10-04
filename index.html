@@ -54,6 +54,11 @@
   <button onclick="bestellungInOutlook()">
     In Outlook öffnen
   </button>
+
+<button onclick="neueBestellung()">
+  Neue Bestellung
+</button>
+    
 </p>
 
   <div id="mailVorschau"></div>
@@ -546,6 +551,43 @@
         '</pre>';
 
     }
+/*
+ * =====================================================
+ * NEUE BESTELLUNG
+ * =====================================================
+ */
+
+function neueBestellung() {
+
+  if (bestellung.length === 0) {
+    alert('Die Bestellung ist bereits leer.');
+    return;
+  }
+
+  const bestaetigt = confirm(
+    'Aktuelle Bestellung wirklich leeren?'
+  );
+
+  if (!bestaetigt) {
+    return;
+  }
+
+  bestellung = [];
+
+  bestellungSpeichern();
+  bestellungAnzeigen();
+
+  document.getElementById('mailVorschau').innerHTML = '';
+
+  document.getElementById('suche').value = '';
+  document.getElementById('ergebnis').innerHTML = '';
+
+  aktuellerArtikel = null;
+
+  document.getElementById('suche').focus();
+
+}
+    
 /*
  * =====================================================
  * BESTELLUNG IM VERLAUF SPEICHERN
