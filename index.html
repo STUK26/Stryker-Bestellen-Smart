@@ -161,7 +161,6 @@
       }
 
       const mengeFeld = document.getElementById('menge');
-
       const menge = parseInt(mengeFeld.value, 10);
 
       if (!menge || menge < 1) {
@@ -169,19 +168,9 @@
         return;
       }
 
-
-      /*
-       * Prüfen, ob Artikel bereits im Bestellkorb liegt
-       */
-
       const vorhanden = bestellung.find(item =>
         item.artikelnummer === aktuellerArtikel.artikelnummer
       );
-
-
-      /*
-       * Wenn vorhanden -> Menge addieren
-       */
 
       if (vorhanden) {
 
@@ -197,13 +186,7 @@
 
       }
 
-
       bestellungAnzeigen();
-
-
-      /*
-       * Suche für nächsten Artikel vorbereiten
-       */
 
       document.getElementById('suche').value = '';
       document.getElementById('ergebnis').innerHTML = '';
@@ -233,22 +216,81 @@
         return;
       }
 
-
       let html = '';
 
-      bestellung.forEach(item => {
+      bestellung.forEach((item, index) => {
 
         html +=
-          '<p>' +
-          '<strong>' + item.menge + ' x</strong> ' +
+          '<div style="margin-bottom:15px;">' +
+
+          '<strong>' +
           item.artikelnummer +
-          ' – ' +
+          '</strong> – ' +
           item.bezeichnung +
-          '</p>';
+
+          '<br><br>' +
+
+          'Menge: ' +
+
+          '<input ' +
+          'type="number" ' +
+          'min="1" ' +
+          'value="' + item.menge + '" ' +
+          'style="width:60px;" ' +
+          'onchange="mengeAendern(' +
+          index +
+          ', this.value)">' +
+
+          ' ' +
+
+          '<button onclick="positionLoeschen(' +
+          index +
+          ')">Löschen</button>' +
+
+          '</div>';
 
       });
 
       bereich.innerHTML = html;
+
+    }
+
+
+    /*
+     * =====================================================
+     * MENGE IN BESTELLUNG ÄNDERN
+     * =====================================================
+     */
+
+    function mengeAendern(index, neueMenge) {
+
+      const menge = parseInt(neueMenge, 10);
+
+      if (!menge || menge < 1) {
+
+        alert('Die Menge muss mindestens 1 sein.');
+
+        bestellungAnzeigen();
+
+        return;
+      }
+
+      bestellung[index].menge = menge;
+
+    }
+
+
+    /*
+     * =====================================================
+     * POSITION LÖSCHEN
+     * =====================================================
+     */
+
+    function positionLoeschen(index) {
+
+      bestellung.splice(index, 1);
+
+      bestellungAnzeigen();
 
     }
 
@@ -302,7 +344,6 @@
         alert('Bitte Artikelnummer eingeben.');
         return;
       }
-
 
       const bekannterArtikel = artikelstamm.find(item =>
         item.artikelnummer === artikelnummer
@@ -453,14 +494,11 @@
 
         });
 
-
         if (!response.ok) {
           throw new Error('HTTP-Fehler: ' + response.status);
         }
 
-
         const antwort = await response.json();
-
 
         if (antwort.bereitsVorhanden) {
 
@@ -473,7 +511,6 @@
             '<p><strong>Vorschlag gespeichert.</strong></p>';
 
         }
-
 
       } catch (fehler) {
 
