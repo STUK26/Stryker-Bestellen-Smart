@@ -37,10 +37,11 @@
     const API_URL =
       'https://script.google.com/macros/s/AKfycbx9oXcfdmay6RtCI22A18t2TNGghcccYvSlBJ5pu0_E5E2jfSknkWMBqQAUFEhkm3Pv-w/exec';
 
+    const BESTELLUNG_SPEICHER = 'strykerBestellenSmart_bestellung';
+
     let artikelstamm = [];
     let unbekannterBarcode = '';
     let aktuellerArtikel = null;
-
     let bestellung = [];
 
 
@@ -77,6 +78,56 @@
 
     /*
      * =====================================================
+     * BESTELLUNG LOKAL LADEN
+     * =====================================================
+     */
+
+    function bestellungLaden() {
+
+      try {
+
+        const gespeichert =
+          localStorage.getItem(BESTELLUNG_SPEICHER);
+
+        if (gespeichert) {
+
+          const daten = JSON.parse(gespeichert);
+
+          if (Array.isArray(daten)) {
+            bestellung = daten;
+          }
+
+        }
+
+      } catch (fehler) {
+
+        bestellung = [];
+
+      }
+
+      bestellungAnzeigen();
+
+    }
+
+
+    /*
+     * =====================================================
+     * BESTELLUNG LOKAL SPEICHERN
+     * =====================================================
+     */
+
+    function bestellungSpeichern() {
+
+      localStorage.setItem(
+        BESTELLUNG_SPEICHER,
+        JSON.stringify(bestellung)
+      );
+
+    }
+
+
+    /*
+     * =====================================================
      * ARTIKEL SUCHEN
      * =====================================================
      */
@@ -101,10 +152,6 @@
       );
 
 
-      /*
-       * ARTIKEL GEFUNDEN
-       */
-
       if (treffer) {
 
         aktuellerArtikel = treffer;
@@ -128,10 +175,6 @@
         return;
       }
 
-
-      /*
-       * ARTIKEL NICHT GEFUNDEN
-       */
 
       aktuellerArtikel = null;
       unbekannterBarcode = suchwert;
@@ -186,6 +229,7 @@
 
       }
 
+      bestellungSpeichern();
       bestellungAnzeigen();
 
       document.getElementById('suche').value = '';
@@ -258,7 +302,7 @@
 
     /*
      * =====================================================
-     * MENGE IN BESTELLUNG ÄNDERN
+     * MENGE ÄNDERN
      * =====================================================
      */
 
@@ -277,6 +321,8 @@
 
       bestellung[index].menge = menge;
 
+      bestellungSpeichern();
+
     }
 
 
@@ -290,6 +336,7 @@
 
       bestellung.splice(index, 1);
 
+      bestellungSpeichern();
       bestellungAnzeigen();
 
     }
@@ -350,10 +397,6 @@
       );
 
 
-      /*
-       * ARTIKELNUMMER BEREITS BEKANNT
-       */
-
       if (bekannterArtikel) {
 
         const ergebnis = document.getElementById('ergebnis');
@@ -382,10 +425,6 @@
         return;
       }
 
-
-      /*
-       * NEUE ARTIKELNUMMER
-       */
 
       const ergebnis = document.getElementById('ergebnis');
 
@@ -467,7 +506,7 @@
 
     /*
      * =====================================================
-     * VORSCHLAG AN GOOGLE SENDEN
+     * VORSCHLAG SENDEN
      * =====================================================
      */
 
@@ -526,7 +565,7 @@
 
     /*
      * =====================================================
-     * ENTER-TASTE / SCANNER
+     * ENTER / SCANNER
      * =====================================================
      */
 
@@ -551,6 +590,7 @@
      * =====================================================
      */
 
+    bestellungLaden();
     artikelLaden();
 
   </script>
