@@ -47,10 +47,14 @@
   </div>
 
   <p>
-    <button onclick="bestellungVorbereiten()">
-      Bestellung vorbereiten
-    </button>
-  </p>
+  <button onclick="bestellungVorbereiten()">
+    Bestellung vorbereiten
+  </button>
+
+  <button onclick="bestellungInOutlook()">
+    In Outlook öffnen
+  </button>
+</p>
 
   <div id="mailVorschau"></div>
 
@@ -534,7 +538,63 @@
 
     }
 
+/*
+ * =====================================================
+ * BESTELLUNG IN OUTLOOK ÖFFNEN
+ * =====================================================
+ */
 
+function bestellungInOutlook() {
+
+  const van = vanHolen();
+
+  if (!van) {
+    alert('Bitte zuerst VAN speichern.');
+    document.getElementById('van').focus();
+    return;
+  }
+
+  if (bestellung.length === 0) {
+    alert('Die Bestellung ist leer.');
+    return;
+  }
+
+  const betreff =
+    'Bestellung ' + van;
+
+  let mailtext =
+    'Hallo zusammen,\n\n' +
+    'bitte folgende Artikel für ' +
+    van +
+    ' bestellen:\n\n';
+
+  bestellung.forEach(item => {
+
+    mailtext +=
+      item.menge +
+      ' x ' +
+      item.artikelnummer +
+      ' – ' +
+      item.bezeichnung +
+      '\n';
+
+  });
+
+  mailtext +=
+    '\nVielen Dank und viele Grüße\n' +
+    'Lukas';
+
+  const mailto =
+    'mailto:' +
+    TEST_EMPFAENGER +
+    '?subject=' +
+    encodeURIComponent(betreff) +
+    '&body=' +
+    encodeURIComponent(mailtext);
+
+  window.location.href = mailto;
+
+}
     /*
      * =====================================================
      * UNBEKANNTEN ARTIKEL AUFNEHMEN
