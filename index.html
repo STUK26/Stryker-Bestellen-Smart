@@ -46,6 +46,10 @@
 
   <br>
 
+<button id="scanTrigger" type="button">
+  📷 SCANNEN
+</button>
+    
   <button type="button" onclick="kameraSchliessen()">
     Schließen
   </button>
@@ -1075,7 +1079,9 @@ window.location.href = mailto;
      */
 
 let kameraStream = null;
-
+let barcodeReader = null;
+let letzterBarcode = '';
+    
 async function kameraOeffnen() {
   try {
     kameraStream = await navigator.mediaDevices.getUserMedia({
@@ -1090,7 +1096,30 @@ async function kameraOeffnen() {
     await video.play();
 
     document.getElementById('cameraBox').style.display = 'block';
+barcodeReader = new ZXing.BrowserBarcodeReader();
 
+document.getElementById('scanTrigger').onclick = async function () {
+  try {
+    const video = document.getElementById('video');
+
+    const ergebnis = await barcodeReader.decodeOnceFromVideoElement(video);
+    const barcode = String(ergebnis.text || '').trim();
+
+    if (!barcode) {
+      return;
+    }
+
+    letzterBarcode = barcode;
+
+    document.getElementById('suche').value = barcode;
+    artikelSuchen();
+
+  } catch (fehler) {
+    console.error(fehler);
+    alert('Barcode konnte nicht erkannt werden.');
+  }
+};
+    
   } catch (fehler) {
     console.error(fehler);
     alert('Kamera konnte nicht geöffnet werden.');
