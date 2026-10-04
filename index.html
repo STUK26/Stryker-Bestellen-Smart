@@ -58,6 +58,13 @@
 
   <div id="mailVorschau"></div>
 
+  <hr>
+
+<h2>Verlauf</h2>
+
+<div id="verlauf">
+  Noch keine Bestellung an Outlook übergeben.
+</div>
 
   <script>
 
@@ -69,6 +76,9 @@
 
     const VAN_SPEICHER =
       'strykerBestellenSmart_van';
+    
+    const VERLAUF_SPEICHER =
+  'strykerBestellenSmart_verlauf';
 
     const TEST_EMPFAENGER =
       'ukki62@gmail.com';
@@ -536,7 +546,130 @@
         '</pre>';
 
     }
+/*
+ * =====================================================
+ * BESTELLUNG IM VERLAUF SPEICHERN
+ * =====================================================
+ */
 
+function bestellungImVerlaufSpeichern() {
+
+  const van = vanHolen();
+
+  let verlauf = [];
+
+  try {
+
+    const gespeichert =
+      localStorage.getItem(VERLAUF_SPEICHER);
+
+    if (gespeichert) {
+      verlauf = JSON.parse(gespeichert);
+    }
+
+    if (!Array.isArray(verlauf)) {
+      verlauf = [];
+    }
+
+  } catch (fehler) {
+
+    verlauf = [];
+
+  }
+
+  verlauf.unshift({
+    datum: new Date().toISOString(),
+    van: van,
+    status: 'An Outlook übergeben',
+    artikel: JSON.parse(JSON.stringify(bestellung))
+  });
+
+  localStorage.setItem(
+    VERLAUF_SPEICHER,
+    JSON.stringify(verlauf)
+  );
+
+}
+   /*
+ * =====================================================
+ * VERLAUF ANZEIGEN
+ * =====================================================
+ */
+
+function verlaufAnzeigen() {
+
+  const bereich =
+    document.getElementById('verlauf');
+
+  let verlauf = [];
+
+  try {
+
+    const gespeichert =
+      localStorage.getItem(VERLAUF_SPEICHER);
+
+    if (gespeichert) {
+      verlauf = JSON.parse(gespeichert);
+    }
+
+    if (!Array.isArray(verlauf)) {
+      verlauf = [];
+    }
+
+  } catch (fehler) {
+
+    verlauf = [];
+
+  }
+
+  if (verlauf.length === 0) {
+
+    bereich.innerHTML =
+      'Noch keine Bestellung an Outlook übergeben.';
+
+    return;
+
+  }
+
+  let html = '';
+
+  verlauf.forEach(eintrag => {
+
+    const datum =
+      new Date(eintrag.datum).toLocaleString('de-DE');
+
+    html +=
+      '<div style="margin-bottom:20px;">' +
+
+      '<strong>' +
+      datum +
+      ' – ' +
+      eintrag.van +
+      '</strong>' +
+
+      '<br>' +
+      eintrag.status +
+      '<br><br>';
+
+    eintrag.artikel.forEach(item => {
+
+      html +=
+        item.menge +
+        ' x ' +
+        item.artikelnummer +
+        ' – ' +
+        item.bezeichnung +
+        '<br>';
+
+    });
+
+    html += '</div>';
+
+  });
+
+  bereich.innerHTML = html;
+
+} 
 /*
  * =====================================================
  * BESTELLUNG IN OUTLOOK ÖFFNEN
@@ -589,8 +722,11 @@ function bestellungInOutlook() {
     encodeURIComponent(betreff) +
     '&body=' +
     encodeURIComponent(mailtext);
+  
+bestellungImVerlaufSpeichern();
+verlaufAnzeigen();
 
-  window.location.href = mailto;
+window.location.href = mailto;
 
 }
     /*
@@ -880,8 +1016,9 @@ function bestellungInOutlook() {
      */
 
     vanLaden();
-    bestellungLaden();
-    artikelLaden();
+bestellungLaden();
+verlaufAnzeigen();
+artikelLaden();
 
   </script>
 
