@@ -34,24 +34,25 @@
 </div>
 
   <div id="cameraBox" style="display:none; margin-top:10px;">
- <video id="video" playsinline muted
-       style="width:100%; height:205px; object-fit:cover; background:#000;"></video>
+  <div style="position:relative; width:100%; height:205px; background:#000; overflow:hidden;">
+    <video id="video" playsinline muted
+           style="width:100%; height:205px; object-fit:cover; background:#000;"></video>
 
-  <br>
+    <div id="scanRahmen"
+         style="position:absolute; left:8%; right:8%; top:31%; height:38%;
+                border:3px solid #ffd400; box-sizing:border-box; pointer-events:none;">
+    </div>
+  </div>
 
-<button id="scanTrigger" type="button">
-  📷 SCANNEN
-</button>
+  <div id="scanStatus" style="min-height:22px; margin-top:6px;"></div>
 
-<button id="torchBtn" type="button" onclick="lichtUmschalten()">
-  💡 LICHT
-</button>
-    
-  <button type="button" onclick="kameraSchliessen()">
-    Schließen
-  </button>
+  <button id="scanTrigger" type="button">📷 SCANNEN</button>
+
+  <button id="torchBtn" type="button" onclick="lichtUmschalten()">💡 LICHT</button>
+
+  <button type="button" onclick="kameraSchliessen()">Schließen</button>
 </div>
-  
+
   <div id="ergebnis"></div>
 
   <hr>
@@ -160,7 +161,7 @@
 </div>
 
 <div id="appFooter" style="margin-top:24px; text-align:center; font-size:12px; color:#666;">
-    <div><span id="footerVan">VAN nicht gesetzt</span> • Version 0.5</div>
+    <div><span id="footerVan">VAN nicht gesetzt</span> • Version 0.6</div>
     <div id="status">Artikelstamm wird geladen...</div>
   </div>
 
@@ -1253,6 +1254,52 @@ function bestellungInOutlook() {
 let kameraStream = null;
 let barcodeReader = null;
 let scanBereit = false;
+let scanTimeout = null;
+let audioContext = null;
+
+function scanStatusSetzen(text) {
+  const status = document.getElementById('scanStatus');
+  if (status) status.textContent = text || '';
+}
+
+function scanTimeoutStoppen() {
+  if (scanTimeout) {
+    clearTimeout(scanTimeout);
+    scanTimeout = null;
+  }
+}
+
+function scanBestaetigen() {
+  try {
+    if (!audioContext) {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
+    if (audioContext.state === 'suspended') {
+      audioContext.resume();
+    }
+
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(880, audioContext.currentTime);
+    gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.12, audioContext.currentTime + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.11);
+
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + 0.12);
+  } catch (fehler) {
+    console.log('Bestätigungston nicht verfügbar:', fehler);
+  }
+
+  if (navigator.vibrate) {
+    navigator.vibrate(70);
+  }
+}
 
 async function kameraOeffnen() {
   try {
@@ -1262,6 +1309,7 @@ async function kameraOeffnen() {
     }
 
     document.getElementById('cameraBox').style.display = 'block';
+    scanStatusSetzen('Barcode in den gelben Rahmen halten.');
 
     const hints = new Map();
     hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, [
@@ -1274,6 +1322,9 @@ async function kameraOeffnen() {
       ZXing.BarcodeFormat.ITF
     ]);
 
+    // Schwieriger gedruckte, blasse oder leicht beschädigte Barcodes intensiver prüfen.
+    hints.set(ZXing.DecodeHintType.TRY_HARDER, true);
+
     barcodeReader = new ZXing.BrowserBarcodeReader(250, hints);
     scanBereit = false;
 
@@ -1284,9 +1335,30 @@ async function kameraOeffnen() {
     scanTrigger.textContent = '📷 SCANNEN';
 
     scanTrigger.onclick = function () {
+      scanTimeoutStoppen();
+
+      try {
+        if (!audioContext) {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioContext.state === 'suspended') {
+          audioContext.resume();
+        }
+      } catch (fehler) {}
+
       scanBereit = true;
       scanTrigger.disabled = true;
       scanTrigger.textContent = 'SCANNEN…';
+      scanStatusSetzen('Suche Barcode…');
+
+      scanTimeout = setTimeout(function () {
+        if (!scanBereit) return;
+
+        scanBereit = false;
+        scanTrigger.disabled = false;
+        scanTrigger.textContent = '📷 SCANNEN';
+        scanStatusSetzen('Code nicht lesbar – bitte näher herangehen, Licht einschalten oder erneut scannen.');
+      }, 8000);
     };
 
     barcodeReader.decodeFromVideoDevice(
@@ -1300,9 +1372,14 @@ async function kameraOeffnen() {
         if (!/^[A-Za-z0-9-]{3,32}$/.test(barcode)) return;
 
         scanBereit = false;
+        scanTimeoutStoppen();
+
         document.getElementById('suche').value = barcode;
         scanTrigger.disabled = false;
         scanTrigger.textContent = '📷 SCANNEN';
+
+        scanStatusSetzen('✓ Barcode erkannt');
+        scanBestaetigen();
         artikelSuchen();
       }
     );
@@ -1316,6 +1393,8 @@ async function kameraOeffnen() {
 
 async function kameraSchliessen() {
   scanBereit = false;
+  scanTimeoutStoppen();
+  scanStatusSetzen('');
 
   if (barcodeReader) {
     try { barcodeReader.reset(); } catch (fehler) {}
