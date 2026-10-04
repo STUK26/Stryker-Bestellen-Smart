@@ -46,6 +46,14 @@
     Noch keine Artikel in der Bestellung.
   </div>
 
+  <p>
+    <button onclick="bestellungVorbereiten()">
+      Bestellung vorbereiten
+    </button>
+  </p>
+
+  <div id="mailVorschau"></div>
+
 
   <script>
 
@@ -58,6 +66,9 @@
     const VAN_SPEICHER =
       'strykerBestellenSmart_van';
 
+    const TEST_EMPFAENGER =
+      'ukki62@gmail.com';
+
     let artikelstamm = [];
     let unbekannterBarcode = '';
     let aktuellerArtikel = null;
@@ -66,7 +77,7 @@
 
     /*
      * =====================================================
-     * VAN LADEN
+     * VAN
      * =====================================================
      */
 
@@ -86,12 +97,6 @@
 
     }
 
-
-    /*
-     * =====================================================
-     * VAN SPEICHERN
-     * =====================================================
-     */
 
     function vanSpeichern() {
 
@@ -118,12 +123,6 @@
     }
 
 
-    /*
-     * =====================================================
-     * VAN AUSLESEN
-     * =====================================================
-     */
-
     function vanHolen() {
 
       return localStorage.getItem(VAN_SPEICHER) || '';
@@ -133,7 +132,7 @@
 
     /*
      * =====================================================
-     * ARTIKELSTAMM LADEN
+     * ARTIKELSTAMM
      * =====================================================
      */
 
@@ -164,7 +163,7 @@
 
     /*
      * =====================================================
-     * BESTELLUNG LADEN
+     * BESTELLUNG LADEN / SPEICHERN
      * =====================================================
      */
 
@@ -195,12 +194,6 @@
 
     }
 
-
-    /*
-     * =====================================================
-     * BESTELLUNG SPEICHERN
-     * =====================================================
-     */
 
     function bestellungSpeichern() {
 
@@ -349,6 +342,7 @@
 
       document.getElementById('suche').value = '';
       document.getElementById('ergebnis').innerHTML = '';
+      document.getElementById('mailVorschau').innerHTML = '';
 
       aktuellerArtikel = null;
 
@@ -359,7 +353,7 @@
 
     /*
      * =====================================================
-     * BESTELLLISTE ANZEIGEN
+     * BESTELLLISTE
      * =====================================================
      */
 
@@ -421,12 +415,6 @@
     }
 
 
-    /*
-     * =====================================================
-     * MENGE ÄNDERN
-     * =====================================================
-     */
-
     function mengeAendern(index, neueMenge) {
 
       const menge =
@@ -445,14 +433,10 @@
 
       bestellungSpeichern();
 
+      document.getElementById('mailVorschau').innerHTML = '';
+
     }
 
-
-    /*
-     * =====================================================
-     * POSITION LÖSCHEN
-     * =====================================================
-     */
 
     function positionLoeschen(index) {
 
@@ -460,6 +444,93 @@
 
       bestellungSpeichern();
       bestellungAnzeigen();
+
+      document.getElementById('mailVorschau').innerHTML = '';
+
+    }
+
+
+    /*
+     * =====================================================
+     * BESTELLMAIL VORSCHAU
+     * =====================================================
+     */
+
+    function bestellungVorbereiten() {
+
+      const van = vanHolen();
+
+      if (!van) {
+
+        alert('Bitte zuerst VAN speichern.');
+
+        document.getElementById('van').focus();
+
+        return;
+
+      }
+
+
+      if (bestellung.length === 0) {
+
+        alert('Die Bestellung ist leer.');
+
+        return;
+
+      }
+
+
+      const betreff =
+        'Bestellung ' + van;
+
+
+      let mailtext =
+        'Hallo zusammen,\n\n' +
+        'bitte folgende Artikel für ' +
+        van +
+        ' bestellen:\n\n';
+
+
+      bestellung.forEach(item => {
+
+        mailtext +=
+          item.menge +
+          ' x ' +
+          item.artikelnummer +
+          ' – ' +
+          item.bezeichnung +
+          '\n';
+
+      });
+
+
+      mailtext +=
+        '\nVielen Dank und viele Grüße\n' +
+        'Lukas';
+
+
+      const vorschau =
+        document.getElementById('mailVorschau');
+
+
+      vorschau.innerHTML =
+        '<hr>' +
+
+        '<h2>Mail-Vorschau</h2>' +
+
+        '<p><strong>An:</strong> ' +
+        TEST_EMPFAENGER +
+        '</p>' +
+
+        '<p><strong>Betreff:</strong> ' +
+        betreff +
+        '</p>' +
+
+        '<p><strong>Text:</strong></p>' +
+
+        '<pre style="white-space:pre-wrap;">' +
+        mailtext +
+        '</pre>';
 
     }
 
@@ -502,12 +573,6 @@
 
     }
 
-
-    /*
-     * =====================================================
-     * ARTIKELNUMMER PRÜFEN
-     * =====================================================
-     */
 
     function artikelnummerPruefen() {
 
@@ -598,12 +663,6 @@
     }
 
 
-    /*
-     * =====================================================
-     * BARCODE VORSCHLAGEN
-     * =====================================================
-     */
-
     async function barcodeVorschlagen(
       artikelnummer,
       bezeichnungEncoded
@@ -620,12 +679,6 @@
 
     }
 
-
-    /*
-     * =====================================================
-     * NEUEN ARTIKEL VORSCHLAGEN
-     * =====================================================
-     */
 
     async function neuenArtikelVorschlagen(
       artikelnummer
@@ -652,12 +705,6 @@
     }
 
 
-    /*
-     * =====================================================
-     * VORSCHLAG SENDEN
-     * =====================================================
-     */
-
     async function vorschlagSenden(
       artikelnummer,
       bezeichnung,
@@ -669,10 +716,6 @@
 
       const van = vanHolen();
 
-
-      /*
-       * Ohne VAN kein Vorschlag
-       */
 
       if (!van) {
 
@@ -696,15 +739,9 @@
           body: JSON.stringify({
 
             van: van,
-
-            artikelnummer:
-              artikelnummer,
-
-            bezeichnung:
-              bezeichnung,
-
-            barcode:
-              barcode
+            artikelnummer: artikelnummer,
+            bezeichnung: bezeichnung,
+            barcode: barcode
 
           })
 
