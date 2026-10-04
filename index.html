@@ -946,11 +946,24 @@ function bestellungInOutlook() {
     (cc ? '&cc=' + encodeURIComponent(cc) : '') +
     '&body=' +
     encodeURIComponent(mailtext);
-  
-bestellungImVerlaufSpeichern();
-verlaufAnzeigen();
 
-window.location.href = mailto;
+  const outlookMobile =
+    'ms-outlook://compose?to=' +
+    encodeURIComponent(TEST_EMPFAENGER) +
+    (cc ? '&cc=' + encodeURIComponent(cc) : '') +
+    '&subject=' +
+    encodeURIComponent(betreff) +
+    '&body=' +
+    encodeURIComponent(mailtext);
+
+  bestellungImVerlaufSpeichern();
+  verlaufAnzeigen();
+
+  if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+    window.location.href = outlookMobile;
+  } else {
+    window.location.href = mailto;
+  }
 
 }
     /*
