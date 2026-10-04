@@ -12,6 +12,21 @@
 
   <p id="status">Artikelstamm wird geladen...</p>
 
+  <p>
+    <strong>VAN:</strong>
+    <input
+      type="text"
+      id="van"
+      placeholder="z.B. VAN16"
+      autocomplete="off"
+      style="width:100px;"
+    >
+    <button onclick="vanSpeichern()">Speichern</button>
+    <span id="vanStatus"></span>
+  </p>
+
+  <hr>
+
   <input
     type="text"
     id="suche"
@@ -37,12 +52,83 @@
     const API_URL =
       'https://script.google.com/macros/s/AKfycbx9oXcfdmay6RtCI22A18t2TNGghcccYvSlBJ5pu0_E5E2jfSknkWMBqQAUFEhkm3Pv-w/exec';
 
-    const BESTELLUNG_SPEICHER = 'strykerBestellenSmart_bestellung';
+    const BESTELLUNG_SPEICHER =
+      'strykerBestellenSmart_bestellung';
+
+    const VAN_SPEICHER =
+      'strykerBestellenSmart_van';
 
     let artikelstamm = [];
     let unbekannterBarcode = '';
     let aktuellerArtikel = null;
     let bestellung = [];
+
+
+    /*
+     * =====================================================
+     * VAN LADEN
+     * =====================================================
+     */
+
+    function vanLaden() {
+
+      const van =
+        localStorage.getItem(VAN_SPEICHER);
+
+      if (van) {
+
+        document.getElementById('van').value = van;
+
+        document.getElementById('vanStatus').textContent =
+          'gespeichert';
+
+      }
+
+    }
+
+
+    /*
+     * =====================================================
+     * VAN SPEICHERN
+     * =====================================================
+     */
+
+    function vanSpeichern() {
+
+      const van = document
+        .getElementById('van')
+        .value
+        .trim();
+
+      if (!van) {
+
+        alert('Bitte VAN eingeben.');
+        return;
+
+      }
+
+      localStorage.setItem(
+        VAN_SPEICHER,
+        van
+      );
+
+      document.getElementById('vanStatus').textContent =
+        'gespeichert';
+
+    }
+
+
+    /*
+     * =====================================================
+     * VAN AUSLESEN
+     * =====================================================
+     */
+
+    function vanHolen() {
+
+      return localStorage.getItem(VAN_SPEICHER) || '';
+
+    }
 
 
     /*
@@ -78,7 +164,7 @@
 
     /*
      * =====================================================
-     * BESTELLUNG LOKAL LADEN
+     * BESTELLUNG LADEN
      * =====================================================
      */
 
@@ -112,7 +198,7 @@
 
     /*
      * =====================================================
-     * BESTELLUNG LOKAL SPEICHERN
+     * BESTELLUNG SPEICHERN
      * =====================================================
      */
 
@@ -139,11 +225,14 @@
         .value
         .trim();
 
-      const ergebnis = document.getElementById('ergebnis');
+      const ergebnis =
+        document.getElementById('ergebnis');
 
       if (!suchwert) {
+
         ergebnis.innerHTML = '';
         return;
+
       }
 
       const treffer = artikelstamm.find(item =>
@@ -167,12 +256,22 @@
 
           '<p>' +
           '<label>Menge: </label>' +
-          '<input type="number" id="menge" value="1" min="1" style="width:60px;">' +
+
+          '<input ' +
+          'type="number" ' +
+          'id="menge" ' +
+          'value="1" ' +
+          'min="1" ' +
+          'style="width:60px;">' +
+
           '</p>' +
 
-          '<button onclick="zurBestellung()">Zur Bestellung</button>';
+          '<button onclick="zurBestellung()">' +
+          'Zur Bestellung' +
+          '</button>';
 
         return;
+
       }
 
 
@@ -186,7 +285,9 @@
         unbekannterBarcode +
         '</p>' +
 
-        '<button onclick="artikelAufnehmen()">Artikel aufnehmen</button>';
+        '<button onclick="artikelAufnehmen()">' +
+        'Artikel aufnehmen' +
+        '</button>';
 
     }
 
@@ -203,17 +304,24 @@
         return;
       }
 
-      const mengeFeld = document.getElementById('menge');
-      const menge = parseInt(mengeFeld.value, 10);
+      const menge =
+        parseInt(
+          document.getElementById('menge').value,
+          10
+        );
 
       if (!menge || menge < 1) {
+
         alert('Bitte eine gültige Menge eingeben.');
         return;
+
       }
 
       const vorhanden = bestellung.find(item =>
-        item.artikelnummer === aktuellerArtikel.artikelnummer
+        item.artikelnummer ===
+        aktuellerArtikel.artikelnummer
       );
+
 
       if (vorhanden) {
 
@@ -222,12 +330,19 @@
       } else {
 
         bestellung.push({
-          artikelnummer: aktuellerArtikel.artikelnummer,
-          bezeichnung: aktuellerArtikel.bezeichnung,
+
+          artikelnummer:
+            aktuellerArtikel.artikelnummer,
+
+          bezeichnung:
+            aktuellerArtikel.bezeichnung,
+
           menge: menge
+
         });
 
       }
+
 
       bestellungSpeichern();
       bestellungAnzeigen();
@@ -250,7 +365,8 @@
 
     function bestellungAnzeigen() {
 
-      const bereich = document.getElementById('bestellliste');
+      const bereich =
+        document.getElementById('bestellliste');
 
       if (bestellung.length === 0) {
 
@@ -258,6 +374,7 @@
           'Noch keine Artikel in der Bestellung.';
 
         return;
+
       }
 
       let html = '';
@@ -279,7 +396,9 @@
           '<input ' +
           'type="number" ' +
           'min="1" ' +
-          'value="' + item.menge + '" ' +
+          'value="' +
+          item.menge +
+          '" ' +
           'style="width:60px;" ' +
           'onchange="mengeAendern(' +
           index +
@@ -289,7 +408,9 @@
 
           '<button onclick="positionLoeschen(' +
           index +
-          ')">Löschen</button>' +
+          ')">' +
+          'Löschen' +
+          '</button>' +
 
           '</div>';
 
@@ -308,15 +429,16 @@
 
     function mengeAendern(index, neueMenge) {
 
-      const menge = parseInt(neueMenge, 10);
+      const menge =
+        parseInt(neueMenge, 10);
 
       if (!menge || menge < 1) {
 
         alert('Die Menge muss mindestens 1 sein.');
 
         bestellungAnzeigen();
-
         return;
+
       }
 
       bestellung[index].menge = menge;
@@ -350,7 +472,8 @@
 
     function artikelAufnehmen() {
 
-      const ergebnis = document.getElementById('ergebnis');
+      const ergebnis =
+        document.getElementById('ergebnis');
 
       ergebnis.innerHTML =
         '<h3>Neuen Artikel aufnehmen</h3>' +
@@ -365,7 +488,13 @@
         'placeholder="Artikelnummer" ' +
         'autocomplete="off">' +
 
-        '<p><button onclick="artikelnummerPruefen()">Weiter</button></p>';
+        '<p>' +
+
+        '<button onclick="artikelnummerPruefen()">' +
+        'Weiter' +
+        '</button>' +
+
+        '</p>';
 
       document
         .getElementById('neueArtikelnummer')
@@ -388,18 +517,23 @@
         .trim();
 
       if (!artikelnummer) {
+
         alert('Bitte Artikelnummer eingeben.');
         return;
+
       }
 
-      const bekannterArtikel = artikelstamm.find(item =>
-        item.artikelnummer === artikelnummer
-      );
+
+      const bekannterArtikel =
+        artikelstamm.find(item =>
+          item.artikelnummer === artikelnummer
+        );
 
 
       if (bekannterArtikel) {
 
-        const ergebnis = document.getElementById('ergebnis');
+        const ergebnis =
+          document.getElementById('ergebnis');
 
         ergebnis.innerHTML =
           '<h3>Artikel bereits bekannt:</h3>' +
@@ -419,14 +553,20 @@
           '<button onclick="barcodeVorschlagen(\'' +
           bekannterArtikel.artikelnummer +
           '\', \'' +
-          encodeURIComponent(bekannterArtikel.bezeichnung) +
-          '\')">Barcode vorschlagen</button>';
+          encodeURIComponent(
+            bekannterArtikel.bezeichnung
+          ) +
+          '\')">' +
+          'Barcode vorschlagen' +
+          '</button>';
 
         return;
+
       }
 
 
-      const ergebnis = document.getElementById('ergebnis');
+      const ergebnis =
+        document.getElementById('ergebnis');
 
       ergebnis.innerHTML =
         '<h3>Neuer Artikel</h3>' +
@@ -446,9 +586,13 @@
         'autocomplete="off">' +
 
         '<p>' +
+
         '<button onclick="neuenArtikelVorschlagen(\'' +
         artikelnummer +
-        '\')">Artikel vorschlagen</button>' +
+        '\')">' +
+        'Artikel vorschlagen' +
+        '</button>' +
+
         '</p>';
 
     }
@@ -456,7 +600,7 @@
 
     /*
      * =====================================================
-     * NEUEN BARCODE VORSCHLAGEN
+     * BARCODE VORSCHLAGEN
      * =====================================================
      */
 
@@ -483,7 +627,9 @@
      * =====================================================
      */
 
-    async function neuenArtikelVorschlagen(artikelnummer) {
+    async function neuenArtikelVorschlagen(
+      artikelnummer
+    ) {
 
       const bezeichnung = document
         .getElementById('neueBezeichnung')
@@ -491,8 +637,10 @@
         .trim();
 
       if (!bezeichnung) {
+
         alert('Bitte Bezeichnung eingeben.');
         return;
+
       }
 
       await vorschlagSenden(
@@ -516,7 +664,28 @@
       barcode
     ) {
 
-      const ergebnis = document.getElementById('ergebnis');
+      const ergebnis =
+        document.getElementById('ergebnis');
+
+      const van = vanHolen();
+
+
+      /*
+       * Ohne VAN kein Vorschlag
+       */
+
+      if (!van) {
+
+        alert(
+          'Bitte zuerst oben deine VAN-Nummer speichern.'
+        );
+
+        document.getElementById('van').focus();
+
+        return;
+
+      }
+
 
       try {
 
@@ -525,31 +694,53 @@
           method: 'POST',
 
           body: JSON.stringify({
-            van: 'VAN16',
-            artikelnummer: artikelnummer,
-            bezeichnung: bezeichnung,
-            barcode: barcode
+
+            van: van,
+
+            artikelnummer:
+              artikelnummer,
+
+            bezeichnung:
+              bezeichnung,
+
+            barcode:
+              barcode
+
           })
 
         });
 
+
         if (!response.ok) {
-          throw new Error('HTTP-Fehler: ' + response.status);
+
+          throw new Error(
+            'HTTP-Fehler: ' +
+            response.status
+          );
+
         }
 
-        const antwort = await response.json();
+
+        const antwort =
+          await response.json();
+
 
         if (antwort.bereitsVorhanden) {
 
           ergebnis.innerHTML =
-            '<p><strong>Vorschlag bereits vorhanden.</strong></p>';
+            '<p><strong>' +
+            'Vorschlag bereits vorhanden.' +
+            '</strong></p>';
 
         } else {
 
           ergebnis.innerHTML =
-            '<p><strong>Vorschlag gespeichert.</strong></p>';
+            '<p><strong>' +
+            'Vorschlag gespeichert.' +
+            '</strong></p>';
 
         }
+
 
       } catch (fehler) {
 
@@ -571,17 +762,20 @@
 
     document
       .getElementById('suche')
-      .addEventListener('keydown', function(event) {
+      .addEventListener(
+        'keydown',
+        function(event) {
 
-        if (event.key === 'Enter') {
+          if (event.key === 'Enter') {
 
-          event.preventDefault();
+            event.preventDefault();
 
-          artikelSuchen();
+            artikelSuchen();
+
+          }
 
         }
-
-      });
+      );
 
 
     /*
@@ -590,6 +784,7 @@
      * =====================================================
      */
 
+    vanLaden();
     bestellungLaden();
     artikelLaden();
 
