@@ -27,6 +27,7 @@
     const API_URL = 'https://script.google.com/macros/s/AKfycbx9oXcfdmay6RtCI22A18t2TNGghcccYvSlBJ5pu0_E5E2jfSknkWMBqQAUFEhkm3Pv-w/exec';
 
     let artikelstamm = [];
+    let unbekannterBarcode = '';
 
     async function artikelLaden() {
       try {
@@ -56,7 +57,7 @@
       const ergebnis = document.getElementById('ergebnis');
 
       if (!suchwert) {
-        ergebnis.textContent = 'https://script.google.com/macros/s/AKfycbx9oXcfdmay6RtCI22A18t2TNGghcccYvSlBJ5pu0_E5E2jfSknkWMBqQAUFEhkm3Pv-w/exec';
+        ergebnis.textContent = 'Bitte Artikelnummer oder Barcode eingeben.';
         return;
       }
 
@@ -66,6 +67,8 @@
       );
 
       if (treffer) {
+        unbekannterBarcode = '';
+
         ergebnis.innerHTML =
           '<p><strong>Artikelnummer:</strong> ' +
           treffer.artikelnummer +
@@ -73,9 +76,105 @@
           '<p><strong>Bezeichnung:</strong> ' +
           treffer.bezeichnung +
           '</p>';
+
       } else {
+        unbekannterBarcode = suchwert;
+
         ergebnis.innerHTML =
-          '<p><strong>Artikel nicht bekannt.</strong></p>';
+          '<p><strong>Artikel nicht bekannt.</strong></p>' +
+          '<p>Barcode: ' + unbekannterBarcode + '</p>' +
+          '<button onclick="vorschlagStarten()">Artikel aufnehmen</button>';
+      }
+    }
+
+    function vorschlagStarten() {
+      document.getElementById('ergebnis').innerHTML =
+        '<p><strong>Neuen Artikel aufnehmen</strong></p>' +
+        '<p>Barcode: ' + unbekannterBarcode + '</p>' +
+        '<input type="text" id="neueArtikelnummer" placeholder="Artikelnummer">' +
+        '<br><br>' +
+        '<button onclick="artikelnummerPruefen()">Weiter</button>';
+    }
+
+    function artikelnummerPruefen() {
+      const artikelnummer = document
+        .getElementById('neueArtikelnummer')
+        .value
+        .trim();
+
+      if (!artikelnummer) {
+        alert('Bitte Artikelnummer eingeben.');
+        return;
+      }
+
+      const vorhandenerArtikel = artikelstamm.find(item =>
+        item.artikelnummer === artikelnummer
+      );
+
+      if (vorhandenerArtikel) {
+        document.getElementById('ergebnis').innerHTML =
+          '<p><strong>Artikel bereits bekannt:</strong></p>' +
+          '<p>Artikelnummer: ' + vorhandenerArtikel.artikelnummer + '</p>' +
+          '<p>Bezeichnung: ' + vorhandenerArtikel.bezeichnung + '</p>' +
+          '<p>Neuer Barcode: ' + unbekannterBarcode + '</p>' +
+          '<button onclick="vorschlagSenden(\'' +
+          vorhandenerArtikel.artikelnummer +
+          '\', \'' +
+          vorhandenerArtikel.bezeichnung.replace(/'/g, "\\'") +
+          '\')">Barcode vorschlagen</button>';
+
+      } else {
+        document.getElementById('ergebnis').innerHTML =
+          '<p><strong>Neue Artikelnummer</strong></p>' +
+          '<p>Artikelnummer: ' + artikelnummer + '</p>' +
+          '<input type="text" id="neueBezeichnung" placeholder="Bezeichnung">' +
+          '<br><br>' +
+          '<button onclick="neuenArtikelSenden(\'' +
+          artikelnummer +
+          '\')">Vorschlag senden</button>';
+      }
+    }
+
+    function neuenArtikelSenden(artikelnummer) {
+      const bezeichnung = document
+        .getElementById('neueBezeichnung')
+        .value
+        .trim();
+
+      if (!bezeichnung) {
+        alert('Bitte Bezeichnung eingeben.');
+        return;
+      }
+
+      vorschlagSenden(artikelnummer, bezeichnung);
+    }
+
+    async function vorschlagSenden(artikelnummer, bezeichnung) {
+      const daten = {
+        van: 'VAN16',
+        artikelnummer: artikelnummer,
+        bezeichnung: bezeichnung,
+        barcode: unbekannterBarcode
+      };
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          body: JSON.stringify(daten)
+        });
+
+        const antwort = await response.json();
+
+        if (antwort.erfolg) {
+          document.getElementById('ergebnis').innerHTML =
+            '<p><strong>Vorschlag gespeichert.</strong></p>';
+        } else {
+          throw new Error('Vorschlag konnte nicht gespeichert werden.');
+        }
+
+      } catch (fehler) {
+        document.getElementById('ergebnis').textContent =
+          'Fehler: ' + fehler.message;
       }
     }
 
