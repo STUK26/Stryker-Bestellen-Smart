@@ -14,18 +14,25 @@
 
   <hr>
 
-  <input
-    type="text"
-    id="suche"
-    placeholder="Artikelnummer oder Barcode"
-    autocomplete="off"
-  >
-
-  <button onclick="artikelSuchen()">Suchen</button>
-
 <button id="cameraBtn" onclick="kameraOeffnen()">
   📷 Barcode scannen
 </button>
+
+<button id="manuellBtn" type="button" onclick="manuelleEingabeOeffnen()">
+  ⌨️ Artikelnummer eingeben
+</button>
+
+<div id="manuelleEingabe" style="display:none; margin-top:10px;">
+  <input
+    type="text"
+    id="suche"
+    placeholder="Artikelnummer"
+    autocomplete="off"
+    inputmode="numeric"
+  >
+
+  <button type="button" onclick="artikelSuchen()">Suchen</button>
+</div>
 
   <div id="cameraBox" style="display:none; margin-top:10px;">
  <video id="video" playsinline muted
@@ -224,6 +231,16 @@
         JSON.stringify(bestellung)
       );
 
+    }
+
+
+    function manuelleEingabeOeffnen() {
+      const bereich = document.getElementById('manuelleEingabe');
+      const suche = document.getElementById('suche');
+
+      bereich.style.display = 'block';
+      suche.value = '';
+      suche.focus();
     }
 
 
@@ -1100,7 +1117,9 @@ async function kameraSchliessen() {
   scanTrigger.disabled = false;
   scanTrigger.textContent = '📷 SCANNEN';
 
-  document.getElementById('suche').focus();
+  if (!istMobil() && document.getElementById('manuelleEingabe').style.display !== 'none') {
+    document.getElementById('suche').focus();
+  }
 }
 async function lichtUmschalten() {
   try {
@@ -1146,9 +1165,7 @@ bestellungLaden();
 verlaufAnzeigen();
 artikelLaden();
 
-    if (!istMobil()) {
-  document.getElementById('suche').focus();
-}
+
 
   </script>
 
