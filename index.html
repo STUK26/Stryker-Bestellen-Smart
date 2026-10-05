@@ -5,105 +5,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stryker Bestellen Smart</title>
+<style>
+:root{--y:#ffc928;--bg:#101719;--panel:#192326;--line:#344145;--text:#f7f7f7;--muted:#aeb9bc}
+*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text)}
+#startAnsicht{width:min(100%,460px);min-height:100vh;margin:auto;padding:24px 18px 18px;display:flex;flex-direction:column}
+.startHeader{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:26px}.brandStryker{font-size:38px;font-weight:800;letter-spacing:-1.5px;line-height:1}.brandSmart{margin-top:7px;font-size:22px;font-weight:750;color:var(--y)}
+.iconButton{width:46px;height:46px;border:1px solid var(--line);border-radius:14px;background:var(--panel);color:var(--text);font-size:22px}
+.vanCard{width:100%;border:1px solid var(--line);border-radius:16px;background:var(--panel);color:var(--text);padding:15px 16px;display:flex;align-items:center;gap:13px;text-align:left;margin-bottom:18px}.vanIcon{font-size:27px}.vanLabel{display:block;font-size:12px;color:var(--muted)}#startVan{display:block;margin-top:2px;font-size:18px;font-weight:700}.vanArrow{margin-left:auto;font-size:24px;color:var(--muted)}
+.scanMain{width:100%;min-height:78px;border:0;border-radius:17px;background:var(--y);color:#101010;font-size:20px;font-weight:800;margin-bottom:12px}
+.startActions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}.secondaryAction,.historyAction{min-height:62px;border:1px solid var(--line);border-radius:15px;background:var(--panel);color:var(--text);font-size:15px;font-weight:650}.historyAction{width:100%;min-height:48px;color:var(--muted);margin-bottom:18px}
+.orderStartButton{width:100%;min-height:62px;margin-top:auto;border:0;border-radius:16px;background:#f5f6f6;color:#101415;font-size:17px;font-weight:800}
+#appFooter{margin-top:14px!important;text-align:center;font-size:11px!important;color:#7f8c90!important;line-height:1.45}
+@media(min-width:700px){#startAnsicht{min-height:760px;padding-top:38px}}
+</style>
 </head>
 
 <body>
-
-  <h1>Stryker Bestellen Smart</h1>
-
-
-  <hr>
-
-<button id="cameraBtn" onclick="kameraOeffnen()">
-  📷 Barcode scannen
-</button>
-
-<button id="manuellBtn" type="button" onclick="manuelleEingabeOeffnen()">
-  ⌨️ Artikelnummer eingeben
-</button>
-
-<div id="manuelleEingabe" style="display:none; margin-top:10px;">
-  <input
-    type="text"
-    id="suche"
-    placeholder="Artikelnummer"
-    autocomplete="off"
-    inputmode="numeric"
-  >
-
-  <button type="button" onclick="artikelSuchen()">Suchen</button>
-</div>
-
-  <div id="cameraBox" style="display:none; margin-top:10px;">
-  <div style="position:relative; width:100%; height:205px; background:#000; overflow:hidden;">
-    <video id="video" playsinline muted
-           style="width:100%; height:205px; object-fit:cover; background:#000;"></video>
-
-    <div id="scanRahmen"
-         style="position:absolute; left:8%; right:8%; top:31%; height:38%;
-                border:3px solid #ffd400; box-sizing:border-box; pointer-events:none;">
-    </div>
-  </div>
-
-  <div id="scanStatus" style="min-height:22px; margin-top:6px;"></div>
-
-  <button id="scanTrigger" type="button">📷 SCANNEN</button>
-
-  <button id="torchBtn" type="button" onclick="lichtUmschalten()">💡 LICHT</button>
-
-  <button type="button" onclick="kameraSchliessen()">Schließen</button>
-</div>
-
+<div id="startAnsicht">
+  <div class="startHeader"><div><div class="brandStryker">stryker</div><div class="brandSmart">Bestellen Smart</div></div><button class="iconButton" type="button" onclick="einstellungenOeffnen()">⚙️</button></div>
+  <button class="vanCard" type="button" onclick="einstellungenOeffnen()"><span class="vanIcon">🚐</span><span><span class="vanLabel">Mein VAN</span><span id="startVan">VAN nicht gesetzt</span></span><span class="vanArrow">›</span></button>
+  <button id="cameraBtn" class="scanMain" type="button" onclick="kameraOeffnen()">▣ &nbsp; Artikel scannen</button>
+  <div class="startActions"><button type="button" class="secondaryAction" onclick="favoritenOeffnen()">⭐ Favoriten</button><button id="manuellBtn" type="button" class="secondaryAction" onclick="manuelleEingabeOeffnen()">⌨️ Manuell eingeben</button></div>
+  <button type="button" class="historyAction" onclick="verlaufOeffnen()">📋 Verlauf</button>
+  <div id="manuelleEingabe" style="display:none;margin-top:10px"><input type="text" id="suche" placeholder="Artikelnummer" autocomplete="off" inputmode="numeric"><button type="button" onclick="artikelSuchen()">Suchen</button></div>
+  <div id="cameraBox" style="display:none;margin-top:10px"><div style="position:relative;width:100%;height:205px;background:#000;overflow:hidden"><video id="video" playsinline muted style="width:100%;height:205px;object-fit:cover;background:#000"></video><div id="scanRahmen" style="position:absolute;left:8%;right:8%;top:31%;height:38%;border:3px solid #ffd400;box-sizing:border-box;pointer-events:none"></div></div><div id="scanStatus" style="min-height:22px;margin-top:6px"></div><button id="scanTrigger" type="button">📷 SCANNEN</button><button id="torchBtn" type="button" onclick="lichtUmschalten()">💡 LICHT</button><button type="button" onclick="kameraSchliessen()">Schließen</button></div>
   <div id="ergebnis"></div>
-
-  <hr>
-
-  <div id="bestellungButtonBereich">
-  <button type="button" id="bestellungBtn" onclick="bestellungOeffnen()">
-    🛒 Bestellung (0)
-  </button>
+  <div id="bestellungButtonBereich"><button type="button" id="bestellungBtn" class="orderStartButton" onclick="bestellungOeffnen()">Zur Bestellung → (0)</button></div>
+  <div id="verlaufButtonBereich" style="display:none"></div><div id="einstellungenButtonBereich" style="display:none"></div>
+  <div id="appFooter"><div><span id="footerVan">VAN nicht gesetzt</span> • Version 0.8</div><div id="status">Artikelstamm wird geladen...</div></div>
 </div>
-
-<div id="bestellungAnsicht" style="display:none;">
-  <p>
-    <button type="button" onclick="bestellungSchliessen()">
-      ← Zurück
-    </button>
-  </p>
-
-  <h2>Bestellung</h2>
-
-  <div id="bestellliste">
-    Noch keine Artikel in der Bestellung.
-  </div>
-
-  <p>
-    <button onclick="bestellungInOutlook()">
-      In Outlook öffnen
-    </button>
-
-    <button onclick="neueBestellung()">
-      Neue Bestellung
-    </button>
-  </p>
-</div>
-
-<hr>
-
-<div id="verlaufButtonBereich">
-  <button type="button" onclick="favoritenOeffnen()">⭐ Favoriten</button>
-
-<button type="button" onclick="verlaufOeffnen()">
-    📋 Verlauf
-  </button>
-</div>
-
-<div id="einstellungenButtonBereich" style="margin-top:10px;">
-  <button type="button" onclick="einstellungenOeffnen()">
-    ⚙️ Einstellungen
-  </button>
-</div>
-
+<div id="bestellungAnsicht" style="display:none"><p><button type="button" onclick="bestellungSchliessen()">← Zurück</button></p><h2>Bestellung</h2><div id="bestellliste">Noch keine Artikel in der Bestellung.</div><p><button onclick="bestellungInOutlook()">In Outlook öffnen</button> <button onclick="neueBestellung()">Neue Bestellung</button></p></div>
 <div id="favoritenAnsicht" style="display:none;">
   <button type="button" onclick="favoritenSchliessen()">← Zurück</button>
   <h2>⭐ Favoriten</h2>
@@ -170,10 +101,7 @@
   </p>
 </div>
 
-<div id="appFooter" style="margin-top:24px; text-align:center; font-size:12px; color:#666;">
-    <div><span id="footerVan">VAN nicht gesetzt</span> • Version 0.8</div>
-    <div id="status">Artikelstamm wird geladen...</div>
-  </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.18.6/umd/index.min.js"></script>
   
@@ -227,6 +155,8 @@
 
       if (footerVan) {
         footerVan.textContent = van || 'VAN nicht gesetzt';
+        const startVan=document.getElementById('startVan');
+        if(startVan) startVan.textContent=van || 'VAN nicht gesetzt';
       }
     }
 
@@ -606,7 +536,7 @@
       const button = document.getElementById('bestellungBtn');
 
       if (button) {
-        button.textContent = '🛒 Bestellung (' + bestellung.length + ')';
+        button.textContent = 'Zur Bestellung → (' + bestellung.length + ')';
       }
     }
 
