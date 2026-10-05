@@ -629,7 +629,7 @@
      * =====================================================
      */
 
-    function artikelSuchen() {
+    function artikelSuchen(quelle = 'manuell') {
 
       const suchwert = document
         .getElementById('suche')
@@ -694,17 +694,23 @@
       aktuellerArtikel = null;
       unbekannterBarcode = suchwert;
 
-      ergebnis.innerHTML =
-        '<p><strong>Artikel nicht bekannt.</strong></p>' +
-
-        '<p>Barcode: ' +
-        unbekannterBarcode +
-        '</p>' +
-
-        '<button type="button" id="manuellArtikelAufnehmenBtn" onclick="artikelAufnehmen()">' +
-        '<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/></svg>' +
-        '<span>Artikel aufnehmen</span>' +
-        '</button>';
+      if (quelle === 'scanner') {
+        ergebnis.innerHTML =
+          '<p><strong>Artikel nicht bekannt.</strong></p>' +
+          '<p>Barcode: ' + unbekannterBarcode + '</p>' +
+          '<button type="button" id="manuellArtikelAufnehmenBtn" onclick="artikelAufnehmen()">' +
+          '<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/></svg>' +
+          '<span>Artikel aufnehmen</span>' +
+          '</button>';
+      } else {
+        ergebnis.innerHTML =
+          '<p><strong>Artikel nicht bekannt.</strong></p>' +
+          '<p>Artikelnummer: ' + suchwert + '</p>' +
+          '<button type="button" id="manuellArtikelAufnehmenBtn" onclick="artikelAufnehmen(\'manuell\')">' +
+          '<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/></svg>' +
+          '<span>Artikel aufnehmen</span>' +
+          '</button>';
+      }
 
     }
 
@@ -1204,10 +1210,21 @@ function bestellungInOutlook() {
      * =====================================================
      */
 
-    function artikelAufnehmen() {
+    function artikelAufnehmen(quelle) {
 
       const ergebnis =
         document.getElementById('ergebnis');
+
+      if (quelle === 'manuell') {
+        const artikelnummer = unbekannterBarcode;
+        ergebnis.innerHTML =
+          '<h3>Neuer Artikel</h3>' +
+          '<p>Artikelnummer: ' + artikelnummer + '</p>' +
+          '<input type="text" id="neueBezeichnung" placeholder="Bezeichnung" autocomplete="off">' +
+          '<p><button onclick="neuenArtikelVorschlagen(\'' + artikelnummer + '\', \'\')">Artikel vorschlagen</button></p>';
+        document.getElementById('neueBezeichnung').focus();
+        return;
+      }
 
       ergebnis.innerHTML =
         '<h3>Neuen Artikel aufnehmen</h3>' +
@@ -1337,14 +1354,15 @@ function bestellungInOutlook() {
       await vorschlagSenden(
         artikelnummer,
         bezeichnung,
-        unbekannterBarcode
+        barcode === undefined ? unbekannterBarcode : barcode
       );
 
     }
 
 
     async function neuenArtikelVorschlagen(
-      artikelnummer
+      artikelnummer,
+      barcode
     ) {
 
       const bezeichnung = document
@@ -1800,7 +1818,7 @@ async function kameraOeffnen() {
 
         scanStatusSetzen('✓ Barcode erkannt');
         scanBestaetigen();
-        artikelSuchen();
+        artikelSuchen('scanner');
       }
     );
 
