@@ -104,6 +104,25 @@
 #cameraBox #scanTrigger .uiIcon,
 #cameraBox #torchBtn .uiIcon{width:24px;height:24px}
 
+/* Manuelle Eingabe – nur diese Seite */
+#manuelleEingabe h2{color:var(--y);}
+#manuelleEingabe #manuellSuchenBtn{
+  width:100%;
+  min-height:62px;
+  margin-top:10px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:var(--panel);
+  color:var(--text);
+  font-size:15px;
+  font-weight:650;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+}
+#manuelleEingabe #manuellSuchenBtn .uiIcon{width:24px;height:24px;}
+
 /* Neuer-Artikel-Ablauf – nur Darstellung innerhalb des Scanner-Ergebnisses */
 #cameraBox #scanErgebnis{
   margin-top:18px;
@@ -237,10 +256,10 @@
   <div id="bestellungButtonBereich"><button type="button" id="bestellungBtn" class="orderStartButton" onclick="bestellungOeffnen()">Zur Bestellung → (0)</button></div>
   <div id="manuelleEingabe" class="eingabeOverlay">
     <div class="eingabeOverlayInnen">
-      <button type="button" class="overlayZurueck" onclick="manuelleEingabeSchliessen()">← Schließen</button>
+      <button type="button" class="overlayZurueck" onclick="manuelleEingabeSchliessen()">← Zurück</button>
       <h2>Artikelnummer eingeben</h2>
       <input type="text" id="suche" placeholder="Artikelnummer" autocomplete="off" inputmode="numeric">
-      <button type="button" onclick="artikelSuchen()">Suchen</button>
+      <button type="button" id="manuellSuchenBtn" onclick="artikelSuchen()"><svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg><span>Suchen</span></button>
       <div id="ergebnis"></div>
     </div>
   </div>
