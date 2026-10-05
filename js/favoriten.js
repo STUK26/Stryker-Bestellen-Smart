@@ -1,3 +1,12 @@
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 function favoritenLaden() {
   try {
     const daten = JSON.parse(localStorage.getItem(FAVORITEN_SPEICHER) || '[]');
