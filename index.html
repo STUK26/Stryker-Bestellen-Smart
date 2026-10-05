@@ -126,6 +126,14 @@
 }
 </style>
 
+
+<style>
+/* Version 0.8.2 – Hauptseite: Favoriten + Manuell eingeben untereinander */
+.homeSecondaryRow{
+  grid-template-columns: 1fr !important;
+}
+</style>
+
 </head>
 
 <body>
@@ -158,7 +166,7 @@
   </div>
   <div id="bestellungButtonBereich"><button type="button" id="bestellungBtn" class="orderStartButton" onclick="bestellungOeffnen()">Zur Bestellung → (0)</button></div>
   <div id="verlaufButtonBereich" style="display:none"></div><div id="einstellungenButtonBereich" style="display:none"></div>
-  <div id="appFooter"><div><span id="footerVan">VAN nicht gesetzt</span> • Version 0.8.1</div><div id="status">Artikelstamm wird geladen...</div></div>
+  <div id="appFooter"><div><span id="footerVan">VAN nicht gesetzt</span> • Version 0.8.2</div><div id="status">Artikelstamm wird geladen...</div></div>
 </div>
 <div id="bestellungAnsicht" style="display:none"><p><button type="button" onclick="bestellungSchliessen()">← Zurück</button></p><h2>Bestellung</h2><div id="bestellliste">Noch keine Artikel in der Bestellung.</div><p><button onclick="bestellungInOutlook()">In Outlook öffnen</button> <button onclick="neueBestellung()">Neue Bestellung</button></p></div>
 <div id="favoritenAnsicht" style="display:none;">
