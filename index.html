@@ -170,7 +170,7 @@
 </div>
 
 <div id="appFooter" style="margin-top:24px; text-align:center; font-size:12px; color:#666;">
-    <div><span id="footerVan">VAN nicht gesetzt</span> • Version 0.7</div>
+    <div><span id="footerVan">VAN nicht gesetzt</span> • Version 0.8</div>
     <div id="status">Artikelstamm wird geladen...</div>
   </div>
 
@@ -1152,6 +1152,49 @@ function bestellungInOutlook() {
     }
 
 
+    function vorschlagAlsBestellartikelAnzeigen(
+      artikelnummer,
+      bezeichnung,
+      meldung
+    ) {
+      aktuellerArtikel = {
+        artikelnummer: String(artikelnummer),
+        bezeichnung: String(bezeichnung),
+        barcode: String(unbekannterBarcode || '')
+      };
+
+      const ergebnis =
+        document.getElementById('ergebnis');
+
+      ergebnis.innerHTML =
+        '<p><strong>' +
+        meldung +
+        '</strong></p>' +
+
+        '<p><strong>Artikelnummer:</strong> ' +
+        escapeHtml(aktuellerArtikel.artikelnummer) +
+        '</p>' +
+
+        '<p><strong>Bezeichnung:</strong> ' +
+        escapeHtml(aktuellerArtikel.bezeichnung) +
+        '</p>' +
+
+        '<p>' +
+        '<label>Menge: </label>' +
+        '<input ' +
+        'type="number" ' +
+        'id="menge" ' +
+        'value="1" ' +
+        'min="1" ' +
+        'style="width:60px;">' +
+        '</p>' +
+
+        '<button onclick="zurBestellung()">' +
+        'Zur Bestellung' +
+        '</button>';
+    }
+
+
     async function vorschlagSenden(
       artikelnummer,
       bezeichnung,
@@ -1208,19 +1251,19 @@ function bestellungInOutlook() {
 
 
         if (antwort.bereitsVorhanden) {
-
-          ergebnis.innerHTML =
-            '<p><strong>' +
-            'Vorschlag bereits vorhanden.' +
-            '</strong></p>';
-
+          const meldung = 'Vorschlag bereits vorhanden.';
+          vorschlagAlsBestellartikelAnzeigen(
+            artikelnummer,
+            bezeichnung,
+            meldung
+          );
         } else {
-
-          ergebnis.innerHTML =
-            '<p><strong>' +
-            'Vorschlag gespeichert.' +
-            '</strong></p>';
-
+          const meldung = 'Vorschlag gespeichert.';
+          vorschlagAlsBestellartikelAnzeigen(
+            artikelnummer,
+            bezeichnung,
+            meldung
+          );
         }
 
 
