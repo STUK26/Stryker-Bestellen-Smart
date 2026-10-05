@@ -150,6 +150,43 @@
   font-size:18px;
 }
 
+/* Bekannter Artikel: kompakter Ergebnisbereich + Favoritenstern rechts neben Menge */
+#cameraBox #scanErgebnis #ergebnis > p{
+  margin:0 0 10px;
+}
+#cameraBox #scanErgebnis .mengeFavoritZeile{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin:0 0 8px;
+}
+#cameraBox #scanErgebnis .mengeFavoritZeile p{
+  margin:0;
+}
+#cameraBox #scanErgebnis #favoritStern{
+  margin-left:auto !important;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+#cameraBox #scanErgebnis #favoritStern button{
+  width:auto;
+  min-width:56px;
+  min-height:56px;
+  margin:0;
+  padding:0 !important;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  color:var(--y);
+  font-size:38px !important;
+  line-height:1;
+}
+#cameraBox #scanErgebnis .mengeFavoritZeile + button{
+  margin-top:8px;
+}
+
 </style>
 
 <style>
@@ -593,6 +630,7 @@
           treffer.bezeichnung +
           '</p>' +
 
+          '<div class="mengeFavoritZeile">' +
           '<p>' +
           '<label>Menge: </label>' +
 
@@ -604,12 +642,12 @@
           'style="width:60px;">' +
 
           '</p>' +
+          '<span id="favoritStern"></span>' +
+          '</div>' +
 
           '<button onclick="zurBestellung()">' +
           'Zur Bestellung' +
-          '</button>' +
-
-          '<span id="favoritStern" style="margin-left:8px;"></span>';
+          '</button>';
 
         favoritSternAktualisieren();
         return;
