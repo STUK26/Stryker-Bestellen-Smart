@@ -5,15 +5,278 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stryker Bestellen Smart</title>
-  <link rel="stylesheet" href="css/style.css">
+<style>
+:root{--y:#ffc928;--bg:#101719;--panel:#192326;--line:#344145;--text:#f7f7f7;--muted:#aeb9bc}
+*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text)}
+#startAnsicht{width:min(100%,460px);min-height:100vh;margin:auto;padding:24px 18px 18px;display:flex;flex-direction:column}
+.startHeader{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:26px}.brandStryker{font-size:38px;font-weight:800;letter-spacing:-1.5px;line-height:1}.brandSmart{margin-top:7px;font-size:22px;font-weight:750;color:var(--y)}
+.iconButton{width:46px;height:46px;border:1px solid var(--line);border-radius:14px;background:var(--panel);color:var(--text);font-size:22px}
+.vanCard{width:100%;border:1px solid var(--line);border-radius:16px;background:var(--panel);color:var(--text);padding:15px 16px;display:flex;align-items:center;gap:13px;text-align:left;margin-bottom:18px}.vanIcon{font-size:27px}.vanLabel{display:block;font-size:12px;color:var(--muted)}#startVan{display:block;margin-top:2px;font-size:18px;font-weight:700}.vanArrow{margin-left:auto;font-size:24px;color:var(--muted)}
+.scanMain{width:100%;min-height:78px;border:0;border-radius:17px;background:var(--y);color:#101010;font-size:20px;font-weight:800;margin-bottom:12px}
+.startActions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}.secondaryAction,.historyAction{min-height:62px;border:1px solid var(--line);border-radius:15px;background:var(--panel);color:var(--text);font-size:15px;font-weight:650}.historyAction{width:100%;min-height:48px;color:var(--muted);margin-bottom:18px}
+.orderStartButton{width:100%;min-height:62px;margin-top:auto;border:0;border-radius:16px;background:#f5f6f6;color:#101415;font-size:17px;font-weight:800}
+#appFooter{margin-top:14px!important;text-align:center;font-size:11px!important;color:#7f8c90!important;line-height:1.45}
+@media(min-width:700px){#startAnsicht{min-height:760px;padding-top:38px}}
+
+  .eingabeOverlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    background:var(--bg);
+    overflow:auto;
+    padding:18px;
+  }
+  .eingabeOverlayInnen{
+    width:min(100%,460px);
+    margin:0 auto;
+  }
+  .overlayZurueck{
+    min-height:44px;
+    border:1px solid var(--line);
+    border-radius:13px;
+    background:var(--panel);
+    color:var(--text);
+    padding:0 16px;
+    font-size:15px;
+    font-weight:650;
+    margin-bottom:16px;
+  }
+  .eingabeOverlay input{
+    width:100%;
+    min-height:50px;
+    border:1px solid var(--line);
+    border-radius:13px;
+    padding:0 14px;
+    font-size:18px;
+    margin-bottom:10px;
+  }
+  .eingabeOverlay button:not(.overlayZurueck){
+    min-height:48px;
+    border-radius:13px;
+    padding:0 16px;
+  }
 
 
+.uiIcon{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle;flex:0 0 auto}
+.scanMain .uiIcon{width:30px;height:30px;margin-right:12px}
+.iconButton{display:flex;align-items:center;justify-content:center}
+.secondaryAction{display:flex;align-items:center;justify-content:center;gap:9px}
+.settingsHistory{width:100%;min-height:52px;margin-top:12px;border:1px solid var(--line);border-radius:13px;background:var(--panel);color:var(--text);font-size:15px;font-weight:650;display:flex;align-items:center;justify-content:center;gap:9px}
 
 
+.strykerOriginalLogo{
+  display:block;
+  width:190px;
+  max-width:58vw;
+  height:auto;
+  object-fit:contain;
+  object-position:left center;
+  margin:0;
+}
+
+/* Scanner-Seite – angepasst an das Design der Startseite */
+#cameraBox #scanStatus{
+  width:100%;
+  margin-top:10px !important;
+  min-height:24px !important;
+  text-align:center;
+  color:var(--y);
+  font-size:15px;
+  font-weight:650;
+}
+#cameraBox #scanTrigger,
+#cameraBox #torchBtn{
+  width:100%;
+  min-height:62px;
+  margin-top:10px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:var(--panel);
+  color:var(--text);
+  font-size:15px;
+  font-weight:650;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+}
+#cameraBox #scanTrigger .uiIcon,
+#cameraBox #torchBtn .uiIcon{width:24px;height:24px}
+
+/* Manuelle Eingabe – nur diese Seite */
+#manuelleEingabe h2{color:var(--y);}
+#manuelleEingabe #manuellSuchenBtn{
+  width:100%;
+  min-height:62px;
+  margin-top:10px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:var(--panel);
+  color:var(--text);
+  font-size:15px;
+  font-weight:650;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+}
+#manuelleEingabe #manuellSuchenBtn .uiIcon{width:24px;height:24px;}
+#manuelleEingabe #manuellArtikelAufnehmenBtn{
+  width:100%;
+  min-height:62px;
+  margin-top:10px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:var(--panel);
+  color:var(--text);
+  font-size:20px;
+  font-weight:800;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+}
+#manuelleEingabe #manuellArtikelAufnehmenBtn .uiIcon{width:24px;height:24px;}
+
+/* Neuer-Artikel-Ablauf – nur Darstellung innerhalb des Scanner-Ergebnisses */
+#cameraBox #scanErgebnis{
+  margin-top:18px;
+}
+#cameraBox #scanErgebnis h3{
+  margin:0 0 18px;
+  color:var(--text);
+  font-size:22px;
+  font-weight:800;
+}
+#cameraBox #scanErgebnis p{
+  font-size:18px;
+  line-height:1.4;
+}
+#cameraBox #scanErgebnis input:not([type="number"]){
+  width:100%;
+  min-height:62px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:#f5f6f6;
+  color:#101415;
+  padding:0 16px;
+  font-size:20px;
+  margin:4px 0 12px;
+}
+#cameraBox #scanErgebnis button{
+  width:100%;
+  min-height:68px;
+  margin-top:10px;
+  border:0;
+  border-radius:17px;
+  background:var(--y);
+  color:#101010;
+  font-size:20px;
+  font-weight:800;
+}
+#cameraBox #scanErgebnis input[type="number"]{
+  min-height:52px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:#f5f6f6;
+  color:#101415;
+  padding:0 10px;
+  font-size:18px;
+}
+
+/* Bekannter Artikel: kompakter Ergebnisbereich + Favoritenstern rechts neben Menge */
+#cameraBox #scanErgebnis #ergebnis > p{
+  margin:0 0 10px;
+}
+#cameraBox #scanErgebnis .mengeFavoritZeile{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin:0 0 8px;
+}
+#cameraBox #scanErgebnis .mengeFavoritZeile p{
+  margin:0;
+}
+#cameraBox #scanErgebnis #favoritStern{
+  margin-left:auto !important;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+#cameraBox #scanErgebnis #favoritStern button{
+  width:auto;
+  min-width:56px;
+  min-height:56px;
+  margin:0;
+  padding:0 !important;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  color:var(--y);
+  font-size:38px !important;
+  line-height:1;
+}
+#cameraBox #scanErgebnis .mengeFavoritZeile + button{
+  margin-top:8px;
+}
+
+</style>
+
+<style>
+@media (max-width: 520px) {
+  #manuellBtn {
+    font-size: 20px !important;
+    white-space: nowrap !important;
+    gap: 10px !important;
+  }
+}
+</style>
 
 
+<style>
+/* Startseite: vier Aktionen untereinander, gleiche Breite/Höhe/Schriftgröße */
+.startActionsEinheitlich{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:10px !important;
+  margin-bottom:10px !important;
+}
+.startActionsEinheitlich .scanMain,
+.startActionsEinheitlich .secondaryAction,
+#bestellungButtonBereich .orderStartButton{
+  width:100% !important;
+  min-height:68px !important;
+  margin:0 !important;
+  font-size:20px !important;
+  font-weight:800 !important;
+  white-space:nowrap !important;
+}
+#bestellungButtonBereich{
+  margin:0 !important;
+}
+</style>
 
 
+<style>
+#vorschlagZurBestellungBtn{
+  width:100%;
+  min-height:62px;
+  margin-top:10px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:var(--panel);
+  color:var(--text);
+  font-size:20px;
+  font-weight:800;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+}
+#vorschlagZurBestellungBtn .uiIcon{width:24px;height:24px;}
+</style>
 
 </head>
 
@@ -131,6 +394,7 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.18.6/umd/index.min.js"></script>
+<script src="js/manuell.js"></script>
   
   <script>
 
@@ -162,6 +426,125 @@
     let unbekannterBarcode = '';
     let aktuellerArtikel = null;
     let bestellung = [];
+
+
+    /*
+     * =====================================================
+     * VAN
+     * =====================================================
+     */
+
+    function vanLaden() {
+      let van = localStorage.getItem(VAN_SPEICHER) || '';
+
+      if (van) {
+        van = van.toUpperCase();
+        localStorage.setItem(VAN_SPEICHER, van);
+      }
+
+      const footerVan = document.getElementById('footerVan');
+
+      if (footerVan) {
+        footerVan.textContent = van || 'VAN nicht gesetzt';
+        const startVan=document.getElementById('startVan');
+        if(startVan) startVan.textContent=van || 'VAN nicht gesetzt';
+      }
+    }
+
+
+    function vanHolen() {
+
+      return (localStorage.getItem(VAN_SPEICHER) || '').toUpperCase();
+
+    }
+
+
+    function einstellungenOeffnen() {
+      document.getElementById('einstellungenAnsicht').style.display = 'block';
+      document.getElementById('einstellungenButtonBereich').style.display = 'none';
+
+      Array.from(document.body.children).forEach(function(element) {
+        if (
+          element.id !== 'einstellungenAnsicht' &&
+          element.id !== 'einstellungenButtonBereich' &&
+          element.tagName !== 'SCRIPT'
+        ) {
+          element.dataset.vorEinstellungen = element.style.display || '';
+          element.style.display = 'none';
+        }
+      });
+
+      document.getElementById('einstellungenVan').value = vanHolen();
+      document.getElementById('ccAktiv').checked =
+        localStorage.getItem(CC_AKTIV_SPEICHER) === 'true';
+      document.getElementById('ccEmail').value =
+        localStorage.getItem(CC_EMAIL_SPEICHER) || '';
+
+      window.scrollTo(0, 0);
+    }
+
+
+    function einstellungenSchliessen() {
+      Array.from(document.body.children).forEach(function(element) {
+        if (
+          element.id !== 'einstellungenAnsicht' &&
+          element.id !== 'einstellungenButtonBereich' &&
+          element.tagName !== 'SCRIPT'
+        ) {
+          element.style.display = element.dataset.vorEinstellungen || '';
+          delete element.dataset.vorEinstellungen;
+        }
+      });
+
+      document.getElementById('einstellungenAnsicht').style.display = 'none';
+      document.getElementById('einstellungenButtonBereich').style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+
+
+    function einstellungenSpeichern() {
+      const van = document
+        .getElementById('einstellungenVan')
+        .value
+        .trim()
+        .toUpperCase();
+
+      const ccAktiv = document.getElementById('ccAktiv').checked;
+      const ccEmail = document.getElementById('ccEmail').value.trim();
+
+      if (!van) {
+        alert('Bitte VAN eingeben.');
+        return;
+      }
+
+      if (ccAktiv && !ccEmail) {
+        alert('Bitte eine CC E-Mail-Adresse eingeben.');
+        return;
+      }
+
+      if (ccAktiv && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ccEmail)) {
+        alert('Bitte eine gültige CC E-Mail-Adresse eingeben.');
+        return;
+      }
+
+      localStorage.setItem(VAN_SPEICHER, van);
+      localStorage.setItem(CC_AKTIV_SPEICHER, String(ccAktiv));
+      localStorage.setItem(CC_EMAIL_SPEICHER, ccEmail);
+
+      vanLaden();
+      document.getElementById('einstellungenVan').value = van;
+
+      alert('Einstellungen gespeichert.');
+    }
+
+
+    function ccHolen() {
+      if (localStorage.getItem(CC_AKTIV_SPEICHER) !== 'true') {
+        return '';
+      }
+
+      return localStorage.getItem(CC_EMAIL_SPEICHER) || '';
+    }
 
 
     /*
@@ -239,26 +622,6 @@
     }
 
 
-    function manuelleEingabeOeffnen() {
-      const bereich = document.getElementById('manuelleEingabe');
-      const suche = document.getElementById('suche');
-      const ergebnis = document.getElementById('ergebnis');
-      const innen = bereich.querySelector('.eingabeOverlayInnen');
-
-      if (ergebnis && innen) innen.appendChild(ergebnis);
-      bereich.style.display = 'block';
-      suche.value = '';
-      ergebnis.innerHTML = '';
-      suche.focus();
-    }
-
-    function manuelleEingabeSchliessen() {
-      const bereich = document.getElementById('manuelleEingabe');
-      bereich.style.display = 'none';
-      document.getElementById('ergebnis').innerHTML = '';
-      document.getElementById('suche').value = '';
-      aktuellerArtikel = null;
-    }
 
 
     /*
@@ -859,7 +1222,7 @@ function bestellungInOutlook() {
           '<h3>Neuer Artikel</h3>' +
           '<p>Artikelnummer: ' + artikelnummer + '</p>' +
           '<input type="text" id="neueBezeichnung" placeholder="Bezeichnung" autocomplete="off">' +
-          '<p><button class="secondaryAction" onclick="neuenArtikelVorschlagen(\'' + artikelnummer + '\', \'\')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Artikel vorschlagen</span></button></p>';
+          '<p><button onclick="neuenArtikelVorschlagen(\'' + artikelnummer + '\', \'\')">Artikel vorschlagen</button></p>';
         document.getElementById('neueBezeichnung').focus();
         return;
       }
@@ -1193,7 +1556,135 @@ function escapeHtml(text) {
     .replace(/'/g, '&#039;');
 }
 
+function favoritenLaden() {
+  try {
+    const daten = JSON.parse(localStorage.getItem(FAVORITEN_SPEICHER) || '[]');
+    return Array.isArray(daten) ? daten : [];
+  } catch (e) { return []; }
+}
+function favoritenSpeichern(daten) {
+  localStorage.setItem(FAVORITEN_SPEICHER, JSON.stringify(daten));
+}
+function istFavorit(artikelnummer) {
+  return favoritenLaden().some(f => String(f.artikelnummer) === String(artikelnummer));
+}
+function favoritSternAktualisieren() {
+  const el = document.getElementById('favoritStern');
+  if (!el || !aktuellerArtikel) return;
+  el.innerHTML =
+    '<button type="button" onclick="favoritUmschalten()" style="font-size:22px;padding:2px 8px;" title="Favorit">' +
+    (istFavorit(aktuellerArtikel.artikelnummer) ? '⭐' : '☆') +
+    '</button>';
+}
+function favoritUmschalten() {
+  if (!aktuellerArtikel) return;
+  let liste = favoritenLaden();
+  const index = liste.findIndex(f => String(f.artikelnummer) === String(aktuellerArtikel.artikelnummer));
+  if (index >= 0) {
+    liste.splice(index, 1);
+  } else {
+    liste.push({
+      artikelnummer: String(aktuellerArtikel.artikelnummer),
+      bezeichnung: String(aktuellerArtikel.bezeichnung || '')
+    });
+  }
+  favoritenSpeichern(liste);
+  favoritSternAktualisieren();
+}
+function favoritenOeffnen() {
+  Array.from(document.body.children).forEach(function(element) {
+    if (element.id !== 'favoritenAnsicht' && element.tagName !== 'SCRIPT') {
+      element.dataset.vorFavoriten = element.style.display || '';
+      element.style.display = 'none';
+    }
+  });
+  document.getElementById('favoritenAnsicht').style.display = 'block';
+  favoritenRendern();
+  window.scrollTo(0, 0);
+}
+function favoritenSchliessen() {
+  Array.from(document.body.children).forEach(function(element) {
+    if (element.id !== 'favoritenAnsicht' && element.tagName !== 'SCRIPT') {
+      element.style.display = element.dataset.vorFavoriten || '';
+      delete element.dataset.vorFavoriten;
+    }
+  });
+  document.getElementById('favoritenAnsicht').style.display = 'none';
+  window.scrollTo(0, 0);
+}
+function favoritenRendern() {
+  const ziel = document.getElementById('favoritenListe');
+  const liste = favoritenLaden();
 
+  if (!liste.length) {
+    ziel.innerHTML = '<p>Noch keine Favoriten gespeichert.</p>';
+    return;
+  }
+
+  ziel.innerHTML = liste.map((f, i) =>
+    '<div style="border-bottom:1px solid #ccc;padding:10px 0;">' +
+      '<label>' +
+        '<input type="checkbox" class="favCheck" data-index="' + i + '"> ' +
+        '<strong>' + escapeHtml(String(f.artikelnummer)) + '</strong><br>' +
+        escapeHtml(String(f.bezeichnung || '')) +
+      '</label>' +
+      '<div style="margin-top:6px;">' +
+        'Menge: ' +
+        '<button type="button" onclick="favoritMengeAendern(' + i + ',-1)">−</button> ' +
+        '<input id="favMenge' + i + '" type="number" min="1" value="1" style="width:55px;text-align:center;"> ' +
+        '<button type="button" onclick="favoritMengeAendern(' + i + ',1)">+</button> ' +
+        '<button type="button" onclick="favoritEntfernen(' + i + ')">⭐ entfernen</button>' +
+      '</div>' +
+    '</div>'
+  ).join('');
+}
+function favoritMengeAendern(index, delta) {
+  const feld = document.getElementById('favMenge' + index);
+  if (!feld) return;
+  feld.value = Math.max(1, (parseInt(feld.value, 10) || 1) + delta);
+}
+function favoritEntfernen(index) {
+  let liste = favoritenLaden();
+  if (index < 0 || index >= liste.length) return;
+  liste.splice(index, 1);
+  favoritenSpeichern(liste);
+  favoritenRendern();
+}
+function favoritenZurBestellung() {
+  const liste = favoritenLaden();
+  const auswahl = document.querySelectorAll('.favCheck:checked');
+
+  if (!auswahl.length) {
+    alert('Bitte mindestens einen Favoriten auswählen.');
+    return;
+  }
+
+  auswahl.forEach(check => {
+    const index = Number(check.dataset.index);
+    const favorit = liste[index];
+    if (!favorit) return;
+
+    const feld = document.getElementById('favMenge' + index);
+    const menge = Math.max(1, parseInt(feld.value, 10) || 1);
+    const vorhanden = bestellung.find(item =>
+      String(item.artikelnummer) === String(favorit.artikelnummer)
+    );
+
+    if (vorhanden) {
+      vorhanden.menge += menge;
+    } else {
+      bestellung.push({
+        artikelnummer: favorit.artikelnummer,
+        bezeichnung: favorit.bezeichnung,
+        menge: menge
+      });
+    }
+  });
+
+  bestellungSpeichern();
+  bestellungAnzeigen();
+  favoritenSchliessen();
+}
 
 let kameraStream = null;
 let barcodeReader = null;
@@ -1408,14 +1899,14 @@ function istMobil() {
 } 
   
 
+    vanLaden();
 bestellungLaden();
 verlaufAnzeigen();
 artikelLaden();
 
 
+
   </script>
-<script src="js/einstellungen.js"></script>
-<script src="js/favoriten.js"></script>
-  
+
 </body>
 </html>
