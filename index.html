@@ -57,16 +57,22 @@
     padding:0 16px;
   }
 
+
+.uiIcon{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle;flex:0 0 auto}
+.scanMain .uiIcon{width:30px;height:30px;margin-right:12px}
+.iconButton{display:flex;align-items:center;justify-content:center}
+.secondaryAction{display:flex;align-items:center;justify-content:center;gap:9px}
+.settingsHistory{width:100%;min-height:52px;margin-top:12px;border:1px solid var(--line);border-radius:13px;background:var(--panel);color:var(--text);font-size:15px;font-weight:650;display:flex;align-items:center;justify-content:center;gap:9px}
+
 </style>
 </head>
 
 <body>
 <div id="startAnsicht">
-  <div class="startHeader"><div><div class="brandStryker">stryker</div><div class="brandSmart">Bestellen Smart</div></div><button class="iconButton" type="button" onclick="einstellungenOeffnen()">⚙️</button></div>
+  <div class="startHeader"><div><div class="brandStryker">stryker</div><div class="brandSmart">Bestellen Smart</div></div><button class="iconButton" type="button" onclick="einstellungenOeffnen()"><svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V21h-4v-.08A1.7 1.7 0 0 0 8.97 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.52-1.03H3v-4h.08A1.7 1.7 0 0 0 4.6 8.94a1.7 1.7 0 0 0-.34-1.88L4.2 7l2.83-2.83.06.06a1.7 1.7 0 0 0 1.88.34A1.7 1.7 0 0 0 10 3.05V3h4v.08a1.7 1.7 0 0 0 1.03 1.52 1.7 1.7 0 0 0 1.88-.34l.06-.06L19.8 7l-.06.06a1.7 1.7 0 0 0-.34 1.88A1.7 1.7 0 0 0 20.92 10H21v4h-.08A1.7 1.7 0 0 0 19.4 15Z"/></svg></button></div>
 
-  <button id="cameraBtn" class="scanMain" type="button" onclick="kameraOeffnen()">▣ &nbsp; Artikel scannen</button>
-  <div class="startActions"><button type="button" class="secondaryAction" onclick="favoritenOeffnen()">⭐ Favoriten</button><button id="manuellBtn" type="button" class="secondaryAction" onclick="manuelleEingabeOeffnen()">⌨️ Manuell eingeben</button></div>
-  <button type="button" class="historyAction" onclick="verlaufOeffnen()">📋 Verlauf</button>
+  <button id="cameraBtn" class="scanMain" type="button" onclick="kameraOeffnen()"><svg class="uiIcon scanIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M7 10v4M10 9v6M13 9v6M16 10v4"/></svg><span>Artikel scannen</span></button>
+  <div class="startActions"><button type="button" class="secondaryAction" onclick="favoritenOeffnen()"><svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.78 5.63 6.22.9-4.5 4.39 1.06 6.2L12 17.2l-5.56 2.92 1.06-6.2L3 9.53l6.22-.9L12 3Z"/></svg><span>Favoriten</span></button><button id="manuellBtn" type="button" class="secondaryAction" onclick="manuelleEingabeOeffnen()"><svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M6 9h1M10 9h1M14 9h1M18 9h.01M6 12h1M10 12h1M14 12h1M18 12h.01M7 15h10"/></svg><span>Manuell eingeben</span></button></div>
   <div id="manuelleEingabe" class="eingabeOverlay">
     <div class="eingabeOverlayInnen">
       <button type="button" class="overlayZurueck" onclick="manuelleEingabeSchliessen()">← Schließen</button>
