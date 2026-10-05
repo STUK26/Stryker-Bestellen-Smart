@@ -82,3 +82,27 @@ function artikelSuchen(quelle = 'manuell') {
       }
 
     }
+
+async function artikelLaden() {
+
+      try {
+
+        const response = await fetch(API_URL);
+
+        if (!response.ok) {
+          throw new Error('HTTP-Fehler: ' + response.status);
+        }
+
+        artikelstamm = await response.json();
+
+        document.getElementById('status').textContent =
+          artikelstamm.length + ' Datensätze geladen.';
+
+      } catch (fehler) {
+
+        document.getElementById('status').textContent =
+          'Fehler beim Laden: ' + fehler.message;
+
+      }
+
+    }
