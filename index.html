@@ -89,25 +89,7 @@
 
 
 <style>
-/* Scanner-Ansicht – Designanpassung */
-#cameraBox .eingabeOverlayInnen{
-  width:min(100%,460px);
-}
-
-#cameraBox .overlayZurueck{
-  min-height:44px; /* bewusst unverändert groß */
-}
-
-#cameraBox #scanStatus{
-  min-height:22px;
-  margin:10px 0 12px !important;
-  text-align:center;
-  color:var(--y);
-  font-size:17px;
-  line-height:1.25;
-  font-weight:800;
-}
-
+/* Version 0.8.1 – nur Scanner-Design */
 #cameraBox #scanTrigger,
 #cameraBox #torchBtn{
   width:100%;
@@ -119,21 +101,16 @@
   color:var(--text);
   font-size:20px;
   font-weight:800;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
 }
 
-#cameraBox #scanErgebnis{
-  margin-top:20px;
-}
-
-#cameraBox #scanErgebnis p{
-  margin:0 0 12px;
-  font-size:18px;
-  line-height:1.35;
-}
-
-#cameraBox #scanErgebnis p:first-child{
-  font-size:20px;
-  font-weight:800;
+#cameraBox #scanTrigger .uiIcon,
+#cameraBox #torchBtn .uiIcon{
+  width:27px;
+  height:27px;
 }
 
 #cameraBox #scanErgebnis button{
@@ -174,14 +151,14 @@
         <div id="scanRahmen" style="position:absolute;left:8%;right:8%;top:31%;height:38%;border:3px solid #ffd400;box-sizing:border-box;pointer-events:none"></div>
       </div>
       <div id="scanStatus" style="min-height:22px;margin-top:6px"></div>
-      <button id="scanTrigger" type="button">▣&nbsp;&nbsp;Scannen</button>
-      <button id="torchBtn" type="button" onclick="lichtUmschalten()">♢&nbsp;&nbsp;Licht</button>
+      <button id="scanTrigger" type="button"><svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M7 10v4M10 9v6M13 9v6M16 10v4"/></svg><span>Scannen</span></button>
+      <button id="torchBtn" type="button" onclick="lichtUmschalten()"><svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M8.5 14.5A6 6 0 1 1 15.5 14.5c-.9.7-1.5 1.5-1.5 2.5h-4c0-1-.6-1.8-1.5-2.5Z"/></svg><span>Licht</span></button>
       <div id="scanErgebnis"></div>
     </div>
   </div>
   <div id="bestellungButtonBereich"><button type="button" id="bestellungBtn" class="orderStartButton" onclick="bestellungOeffnen()">Zur Bestellung → (0)</button></div>
   <div id="verlaufButtonBereich" style="display:none"></div><div id="einstellungenButtonBereich" style="display:none"></div>
-  <div id="appFooter"><div><span id="footerVan">VAN nicht gesetzt</span> • Version 0.8</div><div id="status">Artikelstamm wird geladen...</div></div>
+  <div id="appFooter"><div><span id="footerVan">VAN nicht gesetzt</span> • Version 0.8.1</div><div id="status">Artikelstamm wird geladen...</div></div>
 </div>
 <div id="bestellungAnsicht" style="display:none"><p><button type="button" onclick="bestellungSchliessen()">← Zurück</button></p><h2>Bestellung</h2><div id="bestellliste">Noch keine Artikel in der Bestellung.</div><p><button onclick="bestellungInOutlook()">In Outlook öffnen</button> <button onclick="neueBestellung()">Neue Bestellung</button></p></div>
 <div id="favoritenAnsicht" style="display:none;">
@@ -1635,7 +1612,7 @@ async function kameraOeffnen() {
     const scanTrigger = document.getElementById('scanTrigger');
 
     scanTrigger.disabled = false;
-    scanTrigger.textContent = '📷 SCANNEN';
+    scanTrigger.innerHTML = `<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M7 10v4M10 9v6M13 9v6M16 10v4"/></svg><span>Scannen</span>`;
 
     scanTrigger.onclick = function () {
       scanTimeoutStoppen();
@@ -1651,7 +1628,7 @@ async function kameraOeffnen() {
 
       scanBereit = true;
       scanTrigger.disabled = true;
-      scanTrigger.textContent = 'SCANNEN…';
+      scanTrigger.innerHTML = `<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M7 10v4M10 9v6M13 9v6M16 10v4"/></svg><span>Scannen…</span>`;
       scanStatusSetzen('Suche Barcode…');
 
       scanTimeout = setTimeout(function () {
@@ -1659,7 +1636,7 @@ async function kameraOeffnen() {
 
         scanBereit = false;
         scanTrigger.disabled = false;
-        scanTrigger.textContent = '📷 SCANNEN';
+        scanTrigger.innerHTML = `<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M7 10v4M10 9v6M13 9v6M16 10v4"/></svg><span>Scannen</span>`;
         scanStatusSetzen('Code nicht lesbar – bitte näher herangehen, Licht einschalten oder erneut scannen.');
       }, 8000);
     };
@@ -1679,7 +1656,7 @@ async function kameraOeffnen() {
 
         document.getElementById('suche').value = barcode;
         scanTrigger.disabled = false;
-        scanTrigger.textContent = '📷 SCANNEN';
+        scanTrigger.innerHTML = `<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M7 10v4M10 9v6M13 9v6M16 10v4"/></svg><span>Scannen</span>`;
 
         scanStatusSetzen('✓ Barcode erkannt');
         scanBestaetigen();
@@ -1717,7 +1694,7 @@ async function kameraSchliessen() {
 
   const scanTrigger = document.getElementById('scanTrigger');
   scanTrigger.disabled = false;
-  scanTrigger.textContent = '📷 SCANNEN';
+  scanTrigger.innerHTML = `<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M7 10v4M10 9v6M13 9v6M16 10v4"/></svg><span>Scannen</span>`;
 
   if (!istMobil() && document.getElementById('manuelleEingabe').style.display !== 'none') {
     document.getElementById('suche').focus();
@@ -1747,8 +1724,8 @@ async function lichtUmschalten() {
       advanced: [{ torch: lichtAn }]
     });
 
-    document.getElementById('torchBtn').textContent =
-      lichtAn ? '💡 LICHT AUS' : '💡 LICHT';
+    document.getElementById('torchBtn').innerHTML =
+      lichtAn ? `<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M8.5 14.5A6 6 0 1 1 15.5 14.5c-.9.7-1.5 1.5-1.5 2.5h-4c0-1-.6-1.8-1.5-2.5Z"/></svg><span>Licht aus</span>` : `<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M8.5 14.5A6 6 0 1 1 15.5 14.5c-.9.7-1.5 1.5-1.5 2.5h-4c0-1-.6-1.8-1.5-2.5Z"/></svg><span>Licht</span>`;
       
   } catch (fehler) {
     console.error(fehler);
