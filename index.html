@@ -17,19 +17,78 @@
 .orderStartButton{width:100%;min-height:62px;margin-top:auto;border:0;border-radius:16px;background:#f5f6f6;color:#101415;font-size:17px;font-weight:800}
 #appFooter{margin-top:14px!important;text-align:center;font-size:11px!important;color:#7f8c90!important;line-height:1.45}
 @media(min-width:700px){#startAnsicht{min-height:760px;padding-top:38px}}
+
+  .eingabeOverlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    background:var(--bg);
+    overflow:auto;
+    padding:18px;
+  }
+  .eingabeOverlayInnen{
+    width:min(100%,460px);
+    margin:0 auto;
+  }
+  .overlayZurueck{
+    min-height:44px;
+    border:1px solid var(--line);
+    border-radius:13px;
+    background:var(--panel);
+    color:var(--text);
+    padding:0 16px;
+    font-size:15px;
+    font-weight:650;
+    margin-bottom:16px;
+  }
+  .eingabeOverlay input{
+    width:100%;
+    min-height:50px;
+    border:1px solid var(--line);
+    border-radius:13px;
+    padding:0 14px;
+    font-size:18px;
+    margin-bottom:10px;
+  }
+  .eingabeOverlay button:not(.overlayZurueck){
+    min-height:48px;
+    border-radius:13px;
+    padding:0 16px;
+  }
+
 </style>
 </head>
 
 <body>
 <div id="startAnsicht">
   <div class="startHeader"><div><div class="brandStryker">stryker</div><div class="brandSmart">Bestellen Smart</div></div><button class="iconButton" type="button" onclick="einstellungenOeffnen()">⚙️</button></div>
-  <button class="vanCard" type="button" onclick="einstellungenOeffnen()"><span class="vanIcon">🚐</span><span><span class="vanLabel">Mein VAN</span><span id="startVan">VAN nicht gesetzt</span></span><span class="vanArrow">›</span></button>
+
   <button id="cameraBtn" class="scanMain" type="button" onclick="kameraOeffnen()">▣ &nbsp; Artikel scannen</button>
   <div class="startActions"><button type="button" class="secondaryAction" onclick="favoritenOeffnen()">⭐ Favoriten</button><button id="manuellBtn" type="button" class="secondaryAction" onclick="manuelleEingabeOeffnen()">⌨️ Manuell eingeben</button></div>
   <button type="button" class="historyAction" onclick="verlaufOeffnen()">📋 Verlauf</button>
-  <div id="manuelleEingabe" style="display:none;margin-top:10px"><input type="text" id="suche" placeholder="Artikelnummer" autocomplete="off" inputmode="numeric"><button type="button" onclick="artikelSuchen()">Suchen</button></div>
-  <div id="cameraBox" style="display:none;margin-top:10px"><div style="position:relative;width:100%;height:205px;background:#000;overflow:hidden"><video id="video" playsinline muted style="width:100%;height:205px;object-fit:cover;background:#000"></video><div id="scanRahmen" style="position:absolute;left:8%;right:8%;top:31%;height:38%;border:3px solid #ffd400;box-sizing:border-box;pointer-events:none"></div></div><div id="scanStatus" style="min-height:22px;margin-top:6px"></div><button id="scanTrigger" type="button">📷 SCANNEN</button><button id="torchBtn" type="button" onclick="lichtUmschalten()">💡 LICHT</button><button type="button" onclick="kameraSchliessen()">Schließen</button></div>
-  <div id="ergebnis"></div>
+  <div id="manuelleEingabe" class="eingabeOverlay">
+    <div class="eingabeOverlayInnen">
+      <button type="button" class="overlayZurueck" onclick="manuelleEingabeSchliessen()">← Schließen</button>
+      <h2>Artikelnummer eingeben</h2>
+      <input type="text" id="suche" placeholder="Artikelnummer" autocomplete="off" inputmode="numeric">
+      <button type="button" onclick="artikelSuchen()">Suchen</button>
+      <div id="ergebnis"></div>
+    </div>
+  </div>
+  <div id="cameraBox" class="eingabeOverlay">
+    <div class="eingabeOverlayInnen">
+      <button type="button" class="overlayZurueck" onclick="kameraSchliessen()">← Schließen</button>
+      <div style="position:relative;width:100%;height:205px;background:#000;overflow:hidden">
+        <video id="video" playsinline muted style="width:100%;height:205px;object-fit:cover;background:#000"></video>
+        <div id="scanRahmen" style="position:absolute;left:8%;right:8%;top:31%;height:38%;border:3px solid #ffd400;box-sizing:border-box;pointer-events:none"></div>
+      </div>
+      <div id="scanStatus" style="min-height:22px;margin-top:6px"></div>
+      <button id="scanTrigger" type="button">📷 SCANNEN</button>
+      <button id="torchBtn" type="button" onclick="lichtUmschalten()">💡 LICHT</button>
+      <div id="scanErgebnis"></div>
+    </div>
+  </div>
   <div id="bestellungButtonBereich"><button type="button" id="bestellungBtn" class="orderStartButton" onclick="bestellungOeffnen()">Zur Bestellung → (0)</button></div>
   <div id="verlaufButtonBereich" style="display:none"></div><div id="einstellungenButtonBereich" style="display:none"></div>
   <div id="appFooter"><div><span id="footerVan">VAN nicht gesetzt</span> • Version 0.8</div><div id="status">Artikelstamm wird geladen...</div></div>
@@ -334,10 +393,22 @@
     function manuelleEingabeOeffnen() {
       const bereich = document.getElementById('manuelleEingabe');
       const suche = document.getElementById('suche');
+      const ergebnis = document.getElementById('ergebnis');
+      const innen = bereich.querySelector('.eingabeOverlayInnen');
 
+      if (ergebnis && innen) innen.appendChild(ergebnis);
       bereich.style.display = 'block';
       suche.value = '';
+      ergebnis.innerHTML = '';
       suche.focus();
+    }
+
+    function manuelleEingabeSchliessen() {
+      const bereich = document.getElementById('manuelleEingabe');
+      bereich.style.display = 'none';
+      document.getElementById('ergebnis').innerHTML = '';
+      document.getElementById('suche').value = '';
+      aktuellerArtikel = null;
     }
 
 
@@ -1437,7 +1508,12 @@ async function kameraOeffnen() {
       return;
     }
 
-    document.getElementById('cameraBox').style.display = 'block';
+    const cameraBox = document.getElementById('cameraBox');
+    const scanErgebnis = document.getElementById('scanErgebnis');
+    const ergebnis = document.getElementById('ergebnis');
+    if (ergebnis && scanErgebnis) scanErgebnis.appendChild(ergebnis);
+
+    cameraBox.style.display = 'block';
     scanStatusSetzen('Barcode in den gelben Rahmen halten.');
 
     const hints = new Map();
