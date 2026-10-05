@@ -111,6 +111,34 @@
 }
 </style>
 
+
+<style>
+/* Scanner – nur Design, keine Funktionsänderung */
+.scannerHintNeu{
+  width:100% !important;
+  text-align:center !important;
+  color:#ffc629 !important;
+  font-size:inherit !important;
+  margin-top:10px !important;
+  margin-bottom:10px !important;
+}
+
+/* Alte Scanner-Aktionsbuttons optisch an Startseite angleichen */
+#scannerBereich button:not(.closeButton),
+.scannerActions button,
+.scannerButtons button{
+  min-height:68px !important;
+  border-radius:18px !important;
+  background:#172326 !important;
+  color:#fff !important;
+  border:1px solid #334247 !important;
+  box-shadow:none !important;
+  font-size:20px !important;
+  font-weight:800 !important;
+  text-transform:none !important;
+}
+</style>
+
 </head>
 
 <body>
@@ -125,7 +153,7 @@
   <div id="bestellungButtonBereich"><button type="button" id="bestellungBtn" class="orderStartButton" onclick="bestellungOeffnen()">Zur Bestellung → (0)</button></div>
   <div id="manuelleEingabe" class="eingabeOverlay">
     <div class="eingabeOverlayInnen">
-      <button type="button" class="overlayZurueck" onclick="manuelleEingabeSchliessen()">← Schließen</button>
+      <button type="button" class="overlayZurueck" onclick="manuelleEingabeSchliessen()">← Zurück</button>
       <h2>Artikelnummer eingeben</h2>
       <input type="text" id="suche" placeholder="Artikelnummer" autocomplete="off" inputmode="numeric">
       <button type="button" onclick="artikelSuchen()">Suchen</button>
@@ -134,7 +162,7 @@
   </div>
   <div id="cameraBox" class="eingabeOverlay">
     <div class="eingabeOverlayInnen">
-      <button type="button" class="overlayZurueck" onclick="kameraSchliessen()">← Schließen</button>
+      <button type="button" class="overlayZurueck" onclick="kameraSchliessen()">← Zurück</button>
       <div style="position:relative;width:100%;height:205px;background:#000;overflow:hidden">
         <video id="video" playsinline muted style="width:100%;height:205px;object-fit:cover;background:#000"></video>
         <div id="scanRahmen" style="position:absolute;left:8%;right:8%;top:31%;height:38%;border:3px solid #ffd400;box-sizing:border-box;pointer-events:none"></div>
