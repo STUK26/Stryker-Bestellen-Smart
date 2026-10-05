@@ -122,6 +122,22 @@
   gap:9px;
 }
 #manuelleEingabe #manuellSuchenBtn .uiIcon{width:24px;height:24px;}
+#manuelleEingabe #manuellArtikelAufnehmenBtn{
+  width:100%;
+  min-height:62px;
+  margin-top:10px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:var(--panel);
+  color:var(--text);
+  font-size:20px;
+  font-weight:800;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+}
+#manuelleEingabe #manuellArtikelAufnehmenBtn .uiIcon{width:24px;height:24px;}
 
 /* Neuer-Artikel-Ablauf – nur Darstellung innerhalb des Scanner-Ergebnisses */
 #cameraBox #scanErgebnis{
@@ -685,8 +701,9 @@
         unbekannterBarcode +
         '</p>' +
 
-        '<button onclick="artikelAufnehmen()">' +
-        'Artikel aufnehmen' +
+        '<button type="button" id="manuellArtikelAufnehmenBtn" onclick="artikelAufnehmen()">' +
+        '<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/></svg>' +
+        '<span>Artikel aufnehmen</span>' +
         '</button>';
 
     }
