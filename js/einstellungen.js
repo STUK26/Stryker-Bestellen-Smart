@@ -1,4 +1,4 @@
-    function vanLaden() {
+function vanLaden() {
       let van = localStorage.getItem(VAN_SPEICHER) || '';
 
       if (van) {
@@ -16,14 +16,14 @@
     }
 
 
-    function vanHolen() {
+function vanHolen() {
 
       return (localStorage.getItem(VAN_SPEICHER) || '').toUpperCase();
 
     }
 
 
-    function einstellungenOeffnen() {
+function einstellungenOeffnen() {
       document.getElementById('einstellungenAnsicht').style.display = 'block';
       document.getElementById('einstellungenButtonBereich').style.display = 'none';
 
@@ -48,7 +48,7 @@
     }
 
 
-    function einstellungenSchliessen() {
+function einstellungenSchliessen() {
       Array.from(document.body.children).forEach(function(element) {
         if (
           element.id !== 'einstellungenAnsicht' &&
@@ -66,7 +66,7 @@
     }
 
 
-    function einstellungenSpeichern() {
+function einstellungenSpeichern() {
       const van = document
         .getElementById('einstellungenVan')
         .value
@@ -102,7 +102,7 @@
     }
 
 
-    function ccHolen() {
+function ccHolen() {
       if (localStorage.getItem(CC_AKTIV_SPEICHER) !== 'true') {
         return '';
       }
