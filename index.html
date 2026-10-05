@@ -1241,7 +1241,7 @@ function bestellungInOutlook() {
           '<h3>Neuer Artikel</h3>' +
           '<p>Artikelnummer: ' + artikelnummer + '</p>' +
           '<input type="text" id="neueBezeichnung" placeholder="Bezeichnung" autocomplete="off">' +
-          '<p><button onclick="neuenArtikelVorschlagen(\'' + artikelnummer + '\', \'\')">Artikel vorschlagen</button></p>';
+          '<p><button class="secondaryAction" onclick="neuenArtikelVorschlagen(\'' + artikelnummer + '\', \'\')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Artikel vorschlagen</span></button></p>';
         document.getElementById('neueBezeichnung').focus();
         return;
       }
