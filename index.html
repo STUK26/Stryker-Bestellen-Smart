@@ -75,6 +75,35 @@
   margin:0;
 }
 
+/* Scanner-Seite – angepasst an das Design der Startseite */
+#cameraBox #scanStatus{
+  width:100%;
+  margin-top:10px !important;
+  min-height:24px !important;
+  text-align:center;
+  color:var(--y);
+  font-size:15px;
+  font-weight:650;
+}
+#cameraBox #scanTrigger,
+#cameraBox #torchBtn{
+  width:100%;
+  min-height:62px;
+  margin-top:10px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:var(--panel);
+  color:var(--text);
+  font-size:15px;
+  font-weight:650;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+}
+#cameraBox #scanTrigger .uiIcon,
+#cameraBox #torchBtn .uiIcon{width:24px;height:24px}
+
 </style>
 
 <style>
@@ -134,14 +163,14 @@
   </div>
   <div id="cameraBox" class="eingabeOverlay">
     <div class="eingabeOverlayInnen">
-      <button type="button" class="overlayZurueck" onclick="kameraSchliessen()">← Schließen</button>
+      <button type="button" class="overlayZurueck" onclick="kameraSchliessen()">← Zurück</button>
       <div style="position:relative;width:100%;height:205px;background:#000;overflow:hidden">
         <video id="video" playsinline muted style="width:100%;height:205px;object-fit:cover;background:#000"></video>
         <div id="scanRahmen" style="position:absolute;left:8%;right:8%;top:31%;height:38%;border:3px solid #ffd400;box-sizing:border-box;pointer-events:none"></div>
       </div>
       <div id="scanStatus" style="min-height:22px;margin-top:6px"></div>
-      <button id="scanTrigger" type="button">📷 SCANNEN</button>
-      <button id="torchBtn" type="button" onclick="lichtUmschalten()">💡 LICHT</button>
+      <button id="scanTrigger" type="button"><svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M7 10v4M10 9v6M13 9v6M16 10v4"/></svg><span>SCANNEN</span></button>
+      <button id="torchBtn" type="button" onclick="lichtUmschalten()"><svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M8.2 14.5A6 6 0 1 1 15.8 14.5C14.7 15.3 14 16.2 14 17h-4c0-.8-.7-1.7-1.8-2.5Z"/></svg><span>LICHT</span></button>
       <div id="scanErgebnis"></div>
     </div>
   </div>
@@ -1601,7 +1630,7 @@ async function kameraOeffnen() {
     const scanTrigger = document.getElementById('scanTrigger');
 
     scanTrigger.disabled = false;
-    scanTrigger.textContent = '📷 SCANNEN';
+    scanTrigger.innerHTML = '<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M7 10v4M10 9v6M13 9v6M16 10v4"/></svg><span>SCANNEN</span>';
 
     scanTrigger.onclick = function () {
       scanTimeoutStoppen();
@@ -1617,7 +1646,7 @@ async function kameraOeffnen() {
 
       scanBereit = true;
       scanTrigger.disabled = true;
-      scanTrigger.textContent = 'SCANNEN…';
+      scanTrigger.innerHTML = '<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M7 10v4M10 9v6M13 9v6M16 10v4"/></svg><span>SCANNEN…</span>';
       scanStatusSetzen('Suche Barcode…');
 
       scanTimeout = setTimeout(function () {
@@ -1625,7 +1654,7 @@ async function kameraOeffnen() {
 
         scanBereit = false;
         scanTrigger.disabled = false;
-        scanTrigger.textContent = '📷 SCANNEN';
+        scanTrigger.innerHTML = '<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M7 10v4M10 9v6M13 9v6M16 10v4"/></svg><span>SCANNEN</span>';
         scanStatusSetzen('Code nicht lesbar – bitte näher herangehen, Licht einschalten oder erneut scannen.');
       }, 8000);
     };
@@ -1645,7 +1674,7 @@ async function kameraOeffnen() {
 
         document.getElementById('suche').value = barcode;
         scanTrigger.disabled = false;
-        scanTrigger.textContent = '📷 SCANNEN';
+        scanTrigger.innerHTML = '<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M7 10v4M10 9v6M13 9v6M16 10v4"/></svg><span>SCANNEN</span>';
 
         scanStatusSetzen('✓ Barcode erkannt');
         scanBestaetigen();
@@ -1683,7 +1712,7 @@ async function kameraSchliessen() {
 
   const scanTrigger = document.getElementById('scanTrigger');
   scanTrigger.disabled = false;
-  scanTrigger.textContent = '📷 SCANNEN';
+  scanTrigger.innerHTML = '<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M7 10v4M10 9v6M13 9v6M16 10v4"/></svg><span>SCANNEN</span>';
 
   if (!istMobil() && document.getElementById('manuelleEingabe').style.display !== 'none') {
     document.getElementById('suche').focus();
@@ -1713,8 +1742,8 @@ async function lichtUmschalten() {
       advanced: [{ torch: lichtAn }]
     });
 
-    document.getElementById('torchBtn').textContent =
-      lichtAn ? '💡 LICHT AUS' : '💡 LICHT';
+    document.getElementById('torchBtn').innerHTML =
+      lichtAn ? '<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M8.2 14.5A6 6 0 1 1 15.8 14.5C14.7 15.3 14 16.2 14 17h-4c0-.8-.7-1.7-1.8-2.5Z"/></svg><span>LICHT AUS</span>' : '<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M8.2 14.5A6 6 0 1 1 15.8 14.5C14.7 15.3 14 16.2 14 17h-4c0-.8-.7-1.7-1.8-2.5Z"/></svg><span>LICHT</span>';
       
   } catch (fehler) {
     console.error(fehler);
