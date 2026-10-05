@@ -138,22 +138,6 @@
   gap:9px;
 }
 #manuelleEingabe #manuellArtikelAufnehmenBtn .uiIcon{width:24px;height:24px;}
-#manuelleEingabe #manuellArtikelVorschlagenBtn{
-  width:100%;
-  min-height:62px;
-  margin-top:10px;
-  border:1px solid var(--line);
-  border-radius:15px;
-  background:var(--panel);
-  color:var(--text);
-  font-size:20px;
-  font-weight:800;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:9px;
-}
-#manuelleEingabe #manuellArtikelVorschlagenBtn .uiIcon{width:24px;height:24px;}
 
 /* Neuer-Artikel-Ablauf – nur Darstellung innerhalb des Scanner-Ergebnisses */
 #cameraBox #scanErgebnis{
@@ -272,6 +256,26 @@
 #bestellungButtonBereich{
   margin:0 !important;
 }
+</style>
+
+
+<style>
+#vorschlagZurBestellungBtn{
+  width:100%;
+  min-height:62px;
+  margin-top:10px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:var(--panel);
+  color:var(--text);
+  font-size:20px;
+  font-weight:800;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+}
+#vorschlagZurBestellungBtn .uiIcon{width:24px;height:24px;}
 </style>
 
 </head>
@@ -1237,10 +1241,7 @@ function bestellungInOutlook() {
           '<h3>Neuer Artikel</h3>' +
           '<p>Artikelnummer: ' + artikelnummer + '</p>' +
           '<input type="text" id="neueBezeichnung" placeholder="Bezeichnung" autocomplete="off">' +
-          '<p><button type="button" id="manuellArtikelVorschlagenBtn" onclick="neuenArtikelVorschlagen(\'' + artikelnummer + '\', \'\')">' +
-          '<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l3 3v15H6z"/><path d="M14 3v4h4M9 13h6M12 10v6"/></svg>' +
-          '<span>Artikel vorschlagen</span>' +
-          '</button></p>';
+          '<p><button onclick="neuenArtikelVorschlagen(\'' + artikelnummer + '\', \'\')">Artikel vorschlagen</button></p>';
         document.getElementById('neueBezeichnung').focus();
         return;
       }
@@ -1443,8 +1444,9 @@ function bestellungInOutlook() {
         'style="width:60px;">' +
         '</p>' +
 
-        '<button onclick="zurBestellung()">' +
-        'Zur Bestellung' +
+        '<button type="button" id="vorschlagZurBestellungBtn" onclick="zurBestellung()">' +
+        '<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>' +
+        '<span>Zur Bestellung</span>' +
         '</button>';
     }
 
