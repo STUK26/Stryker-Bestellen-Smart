@@ -85,6 +85,17 @@ function artikelSuchen(quelle = 'manuell') {
 
 async function artikelLaden() {
 
+      const gespeicherterArtikelstamm =
+  localStorage.getItem('strykerBestellenSmart_artikelstamm');
+
+if (gespeicherterArtikelstamm) {
+  try {
+    artikelstamm = JSON.parse(gespeicherterArtikelstamm);
+  } catch (fehler) {
+    console.error('Gespeicherter Artikelstamm konnte nicht gelesen werden.', fehler);
+  }
+}
+
       try {
 
         const response = await fetch(API_URL);
