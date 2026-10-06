@@ -95,6 +95,11 @@ async function artikelLaden() {
 
         artikelstamm = await response.json();
 
+            localStorage.setItem(
+  'strykerBestellenSmart_artikelstamm',
+  JSON.stringify(artikelstamm)
+);
+
         document.getElementById('status').textContent =
           artikelstamm.length + ' Datensätze geladen.';
 
