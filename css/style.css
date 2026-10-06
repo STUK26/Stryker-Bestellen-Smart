@@ -259,3 +259,25 @@
   gap:9px;
 }
 #vorschlagZurBestellungBtn .uiIcon{width:24px;height:24px;}
+
+/* Standard-Aktionsbutton – dunkel */
+.actionButton{
+  width:100%;
+  min-height:62px;
+  margin-top:10px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:var(--panel);
+  color:var(--text);
+  font-size:20px;
+  font-weight:800;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+}
+
+.actionButton .uiIcon{
+  width:24px;
+  height:24px;
+}
