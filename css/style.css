@@ -34,7 +34,7 @@
     font-weight:650;
     margin-bottom:16px;
   }
-  .eingabeOverlay input{
+  .eingabeOverlay input:not([type="checkbox"]){
     width:100%;
     min-height:50px;
     border:1px solid var(--line);
