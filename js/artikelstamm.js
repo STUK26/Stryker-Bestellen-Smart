@@ -249,11 +249,11 @@ async function barcodeVorschlagen(
       const bezeichnung =
         decodeURIComponent(bezeichnungEncoded);
 
-      await vorschlagSenden(
-        artikelnummer,
-        bezeichnung,
-        barcode === undefined ? unbekannterBarcode : barcode
-      );
+   await vorschlagSenden(
+  artikelnummer,
+  bezeichnung,
+  unbekannterBarcode
+);
 
     }
 
