@@ -343,45 +343,49 @@
   <div id="einstellungenAnsicht" class="eingabeOverlay" style="display:none;">
   <div class="eingabeOverlayInnen">
   <p>
-    <button type="button" onclick="einstellungenSchliessen()">
+    <button type="button" class="overlayZurueck" onclick="einstellungenSchliessen()">
       ← Zurück
     </button>
   </p>
 
   <h2>Einstellungen</h2>
 
-  <p>
-    <strong>VAN</strong><br>
-    <input
-      type="text"
-      id="einstellungenVan"
-      placeholder="z.B. VAN16"
-      autocomplete="off"
-      autocapitalize="characters"
-    >
-  </p>
+ <p>
+  <strong>VAN</strong><br>
+  <input
+    type="text"
+    id="einstellungenVan"
+    class="inputField"
+    placeholder="z.B. VAN16"
+    autocomplete="off"
+    autocapitalize="characters"
+  >
+</p>
 
-  <p>
-    <label>
-      <input type="checkbox" id="ccAktiv">
-      CC verwenden
-    </label>
-  </p>
+<p>
+  <strong>CC E-Mail</strong><br>
+  <input
+    type="email"
+    id="ccEmail"
+    class="inputField"
+    placeholder="name@firma.de"
+    autocomplete="email"
+  >
+</p>
 
-  <p>
-    <strong>CC E-Mail</strong><br>
-    <input
-      type="email"
-      id="ccEmail"
-      placeholder="name@firma.de"
-      autocomplete="email"
-    >
-  </p>
+<p>
+  <label>
+    <input type="checkbox" id="ccAktiv">
+    CC verwenden
+  </label>
+</p>
 
 
   <p>
  <div class="startActionsEinheitlich">
-
+<button type="button" class="secondaryAction" onclick="einstellungenSpeichern()">
+  Speichern
+</button>
   <button type="button" class="secondaryAction" onclick="verlaufOeffnen()">
     <svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 4v4h4M12 7v5l3 2"/></svg>
     <span>Bestellverlauf</span>
@@ -393,11 +397,7 @@
 
 </div>
     
-  <p>
-    <button type="button" onclick="einstellungenSpeichern()">
-      Speichern
-    </button>
-  </p>
+  
 </div>
 </div>
 
