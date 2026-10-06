@@ -281,3 +281,16 @@
   width:24px;
   height:24px;
 }
+
+/* Standard-Eingabefeld – weiß */
+.inputField{
+  width:100%;
+  min-height:62px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:#f5f6f6;
+  color:#101415;
+  padding:0 16px;
+  font-size:20px;
+  margin:4px 0 12px;
+}
