@@ -199,6 +199,10 @@ function artikelnummerPruefen() {
           encodeURIComponent(
             bekannterArtikel.bezeichnung
           ) +
+          '\', \'' +
+          encodeURIComponent(
+            unbekannterBarcode
+          ) +
           '\')">' +
           'Barcode vorschlagen' +
           '</button>';
@@ -232,6 +236,10 @@ function artikelnummerPruefen() {
 
         '<button onclick="neuenArtikelVorschlagen(\'' +
         artikelnummer +
+        '\', \'' +
+        encodeURIComponent(
+          unbekannterBarcode
+        ) +
         '\')">' +
         'Artikel vorschlagen' +
         '</button>' +
@@ -243,24 +251,28 @@ function artikelnummerPruefen() {
 
 async function barcodeVorschlagen(
       artikelnummer,
-      bezeichnungEncoded
+      bezeichnungEncoded,
+      barcodeEncoded
     ) {
 
       const bezeichnung =
         decodeURIComponent(bezeichnungEncoded);
 
-   await vorschlagSenden(
-  artikelnummer,
-  bezeichnung,
-  unbekannterBarcode
-);
+      const barcode =
+        decodeURIComponent(barcodeEncoded);
+
+      await vorschlagSenden(
+        artikelnummer,
+        bezeichnung,
+        barcode
+      );
 
     }
 
 
 async function neuenArtikelVorschlagen(
       artikelnummer,
-      barcode
+      barcodeEncoded = ''
     ) {
 
       const bezeichnung = document
@@ -275,10 +287,14 @@ async function neuenArtikelVorschlagen(
 
       }
 
+      const barcode = barcodeEncoded
+        ? decodeURIComponent(barcodeEncoded)
+        : '';
+
       await vorschlagSenden(
         artikelnummer,
         bezeichnung,
-        unbekannterBarcode
+        barcode
       );
 
     }
