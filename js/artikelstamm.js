@@ -85,7 +85,7 @@ function artikelSuchen(quelle = 'manuell') {
 
 async function artikelLaden() {
       
-document.getElementById('status').textContent =
+document.getElementById('settingsArtikelStatus').textContent =
   'Artikelstamm wird geladen...';
       
       const gespeicherterArtikelstamm =
