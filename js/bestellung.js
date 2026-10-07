@@ -370,7 +370,9 @@ function bestellungInOutlook() {
     (cc ? '&cc=' + encodeURIComponent(cc) : '') +
     '&body=' +
     encodeURIComponent(mailtext);
-
+      
+console.log('MAILTO:', mailto);
+      
   const outlookMobile =
     'ms-outlook://compose?to=' +
     encodeURIComponent(TEST_EMPFAENGER) +
