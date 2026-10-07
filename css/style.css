@@ -68,8 +68,9 @@
 }
 
 /* Scanner-Seite – angepasst an das Design der Startseite */
-#cameraBox{
-  margin-top:24px;
+#cameraBox .overlayZurueck{
+  margin-bottom:40px;
+}
 }
 #cameraBox #scanStatus{
   width:100%;
