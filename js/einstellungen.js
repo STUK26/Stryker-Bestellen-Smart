@@ -41,8 +41,7 @@ function einstellungenOeffnen() {
       document.getElementById('einstellungenVan').value = vanHolen();
       document.getElementById('settingsVanStatus').textContent =
   (vanHolen() || 'VAN nicht gesetzt') + ' • Version 0.8';
-      document.getElementById('settingsArtikelStatus').textContent =
-  artikelstamm.length + ' Datensätze geladen.';
+      
       document.getElementById('ccAktiv').checked =
         localStorage.getItem(CC_AKTIV_SPEICHER) === 'true';
       document.getElementById('ccEmail').value =
