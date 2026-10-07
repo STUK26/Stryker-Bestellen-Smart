@@ -381,6 +381,7 @@ function vorschlagAlsBestellartikelAnzeigen(
         '</button>';
     }
 
+let vorschlagWirdGesendet = false;
 
 async function vorschlagSenden(
       artikelnummer,
@@ -388,6 +389,12 @@ async function vorschlagSenden(
       barcode
     ) {
 
+      if (vorschlagWirdGesendet) {
+  return;
+}
+
+vorschlagWirdGesendet = true;
+      
       const ergebnis =
         document.getElementById('ergebnis');
 
@@ -461,5 +468,5 @@ async function vorschlagSenden(
   '<p>Bitte Internetverbindung prüfen und erneut versuchen.</p>';
 
       }
-
+vorschlagWirdGesendet = false;
     }
