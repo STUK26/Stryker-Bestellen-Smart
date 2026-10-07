@@ -122,10 +122,22 @@ if (gespeicherterArtikelstamm) {
 
       } catch (fehler) {
 
-        document.getElementById('status').textContent =
-          'Fehler beim Laden: ' + fehler.message;
+  if (artikelstamm.length > 0) {
 
-      }
+    document.getElementById('status').textContent =
+      artikelstamm.length + ' Datensätze aus lokalem Speicher geladen.';
+
+    document.getElementById('settingsArtikelStatus').textContent =
+      artikelstamm.length + ' Datensätze aus lokalem Speicher geladen.';
+
+  } else {
+
+    document.getElementById('status').textContent =
+      'Fehler beim Laden: ' + fehler.message;
+
+  }
+
+}
 
     }
 
