@@ -319,8 +319,8 @@
 }
 .settingsStatus{
   text-align:center;
-  color:var(--muted);
+  color:#666;
   font-size:12px;
-  line-height:1.45;
-  margin-top:12px;
+  line-height:normal;
+  margin-top:24px;
 }
