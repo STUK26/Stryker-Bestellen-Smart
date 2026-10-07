@@ -457,9 +457,8 @@ async function vorschlagSenden(
       } catch (fehler) {
 
         ergebnis.innerHTML =
-          '<p><strong>Fehler beim Speichern:</strong> ' +
-          fehler.message +
-          '</p>';
+  '<p><strong>Vorschlag konnte nicht gespeichert werden.</strong></p>' +
+  '<p>Bitte Internetverbindung prüfen und erneut versuchen.</p>';
 
       }
 
