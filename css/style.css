@@ -96,6 +96,13 @@
   justify-content:center;
   gap:9px;
 }
+#cameraBox #scanTrigger{
+  border:0;
+  background:var(--y);
+  color:#101010;
+  font-size:20px;
+  font-weight:800;
+}
 #cameraBox #scanTrigger .uiIcon,
 #cameraBox #torchBtn .uiIcon{width:24px;height:24px}
 
