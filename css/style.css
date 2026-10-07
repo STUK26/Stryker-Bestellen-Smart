@@ -301,5 +301,9 @@
   vertical-align:middle;
 }
 .settingsField{
-  margin:0 0 10px;
+  margin:0 0 4px;
+}
+
+.settingsField .inputField{
+  margin-bottom:4px;
 }
