@@ -74,11 +74,16 @@ function bestellungLaden() {
       );
 
 
-      if (vorhanden) {
+    if (vorhanden) {
 
-        vorhanden.menge += menge;
+    if (vorhanden.menge + menge > 999) {
+        alert('Die Gesamtmenge darf maximal 999 betragen.');
+        return;
+    }
 
-      } else {
+    vorhanden.menge += menge;
+
+} else {
 
         bestellung.push({
 
