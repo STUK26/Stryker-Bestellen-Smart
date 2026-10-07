@@ -314,3 +314,6 @@
 .settingsCc{
   margin:8px 0 12px;
 }
+#einstellungenAnsicht h2 + .settingsField{
+  margin-top:-12px;
+}
