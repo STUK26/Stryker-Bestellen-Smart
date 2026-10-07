@@ -84,7 +84,10 @@ function artikelSuchen(quelle = 'manuell') {
     }
 
 async function artikelLaden() {
-
+      
+document.getElementById('status').textContent =
+  'Artikelstamm wird geladen...';
+      
       const gespeicherterArtikelstamm =
   localStorage.getItem('strykerBestellenSmart_artikelstamm');
 
