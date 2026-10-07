@@ -132,8 +132,11 @@ if (gespeicherterArtikelstamm) {
 
   } else {
 
-    document.getElementById('status').textContent =
-      'Fehler beim Laden: ' + fehler.message;
+   document.getElementById('status').textContent =
+  'Artikelstamm nicht verfügbar. Bitte Internetverbindung prüfen.';
+
+document.getElementById('settingsArtikelStatus').textContent =
+  'Artikelstamm nicht verfügbar. Bitte Internetverbindung prüfen.';
 
   }
 
