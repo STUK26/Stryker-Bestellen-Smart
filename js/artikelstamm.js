@@ -463,10 +463,12 @@ vorschlagWirdGesendet = true;
 
       } catch (fehler) {
 
-        ergebnis.innerHTML =
-  '<p><strong>Vorschlag konnte nicht gespeichert werden.</strong></p>' +
-  '<p>Bitte Internetverbindung prüfen und erneut versuchen.</p>';
+        const fehlermeldung = document.createElement('p');
+fehlermeldung.innerHTML =
+  '<strong>Vorschlag konnte nicht gespeichert werden.</strong><br>' +
+  'Bitte Internetverbindung prüfen und erneut versuchen.';
 
+ergebnis.appendChild(fehlermeldung);
       }
 vorschlagWirdGesendet = false;
     }
