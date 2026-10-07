@@ -317,3 +317,10 @@
 #einstellungenAnsicht h2 + .settingsField{
   margin-top:-12px;
 }
+.settingsStatus{
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.45;
+  margin-top:12px;
+}
