@@ -236,9 +236,9 @@ function bestellungLaden() {
       const menge =
         parseInt(neueMenge, 10);
 
-      if (!menge || menge < 1) {
+     if (!menge || menge < 1 || menge > 999) {
 
-        alert('Die Menge muss mindestens 1 sein.');
+        alert('Die Menge muss zwischen 1 und 999 liegen.');
 
         bestellungAnzeigen();
         return;
