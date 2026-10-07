@@ -301,9 +301,13 @@
   vertical-align:middle;
 }
 .settingsField{
-  margin:0 0 4px;
+  margin:0;
 }
 
 .settingsField .inputField{
-  margin-bottom:4px;
+  margin:2px 0 0;
 }
+#ccAktiv{
+  margin-right:8px;
+}
+
