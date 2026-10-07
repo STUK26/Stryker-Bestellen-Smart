@@ -117,6 +117,9 @@ if (gespeicherterArtikelstamm) {
         document.getElementById('status').textContent =
           artikelstamm.length + ' Datensätze geladen.';
 
+            document.getElementById('settingsArtikelStatus').textContent =
+  artikelstamm.length + ' Datensätze geladen.';
+
       } catch (fehler) {
 
         document.getElementById('status').textContent =
