@@ -61,7 +61,7 @@ function bestellungLaden() {
           10
         );
 
-      if (!menge || menge < 1) {
+    if (!menge || menge < 1 || menge > 999) {
 
         alert('Bitte eine gültige Menge eingeben.');
         return;
