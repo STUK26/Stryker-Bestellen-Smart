@@ -350,3 +350,126 @@
 #manuelleEingabe #ergebnis .scanMain {
   min-height: 78px;
 }
+/* Favoritenansicht */
+#favoritenAnsicht {
+  min-height: 100vh;
+  padding: 24px 18px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.favoritenInhalt {
+  width: min(100%, 460px);
+  margin: 0 auto;
+}
+
+.favoritenZurueck {
+  min-height: 52px;
+  padding: 0 18px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  background: var(--panel);
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.favoritenTitel {
+  margin: 30px 0 24px;
+  font-size: 30px;
+  font-weight: 800;
+}
+
+#favoritenListe {
+  display: grid;
+  gap: 12px;
+}
+
+.favoritKarte {
+  padding: 18px 16px;
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  background: var(--panel);
+}
+
+.favoritKopf {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.favCheck {
+  width: 23px;
+  height: 23px;
+  flex-shrink: 0;
+  margin: 5px 0 0;
+  accent-color: var(--y);
+}
+
+.favoritInfo {
+  flex: 1;
+  min-width: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.favoritInfo strong {
+  display: block;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.favoritEntfernen {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg);
+  font-size: 25px;
+}
+
+.favoritMenge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+  font-size: 17px;
+}
+
+.favoritMenge button {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.favoritMenge input {
+  width: 65px;
+  height: 44px;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: white;
+  color: #101010;
+  font-size: 19px;
+  text-align: center;
+}
+
+.favoritenBestellButton {
+  width: 100%;
+  min-height: 70px;
+  margin-top: 18px;
+  padding: 12px;
+  border: 0;
+  border-radius: 17px;
+  background: var(--y);
+  color: #101010;
+  font-size: 18px;
+  font-weight: 800;
+}
