@@ -343,3 +343,10 @@
 #ergebnis > p {
   text-align: center;
 }
+#manuelleEingabe #ergebnis h3 {
+  text-align: center;
+}
+
+#manuelleEingabe #ergebnis .scanMain {
+  min-height: 78px;
+}
