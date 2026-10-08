@@ -52,12 +52,20 @@
 </div>
 <div id="bestellungAnsicht" style="display:none"><p><button type="button" onclick="bestellungSchliessen()">← Zurück</button></p><h2>Bestellung</h2><div id="bestellliste">Noch keine Artikel in der Bestellung.</div><p><button onclick="bestellungInOutlook()">In Outlook öffnen</button> <button onclick="neueBestellung()">Neue Bestellung</button></p></div>
 <div id="favoritenAnsicht" style="display:none;">
-  <button type="button" onclick="favoritenSchliessen()">← Zurück</button>
-  <h2>⭐ Favoriten</h2>
-  <div id="favoritenListe"></div>
-  <button type="button" onclick="favoritenZurBestellung()">Zur Bestellung hinzufügen</button>
-</div>
+  <div class="favoritenInhalt">
+    <button type="button" class="favoritenZurueck"
+      onclick="favoritenSchliessen()">← Zurück</button>
 
+    <h2 class="favoritenTitel">⭐ Favoriten</h2>
+
+    <div id="favoritenListe"></div>
+
+    <button type="button" class="favoritenBestellButton"
+      onclick="favoritenZurBestellung()">
+      🛒 Zur Bestellung hinzufügen
+    </button>
+  </div>
+</div>
 <div id="verlaufAnsicht" style="display:none;">
   <p>
     <button type="button" onclick="verlaufSchliessen()">
