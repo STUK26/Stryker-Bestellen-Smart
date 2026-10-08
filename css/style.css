@@ -262,10 +262,10 @@
   width:100%;
   min-height:62px;
   margin-top:10px;
-  border:1px solid var(--line);
+ border:0;
   border-radius:15px;
-  background:var(--panel);
-  color:var(--text);
+  background:var(--y);
+ color:#101010;
   font-size:20px;
   font-weight:800;
   display:flex;
