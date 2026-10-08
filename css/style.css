@@ -151,10 +151,10 @@
   margin-top:18px;
 }
 #cameraBox #scanErgebnis h3{
-  margin:0 0 18px;
-  color:var(--text);
-  font-size:22px;
+  color:var(--y);
+  font-size:16px;
   font-weight:800;
+  text-align:center;
 }
 #cameraBox #scanErgebnis p{
   font-size:18px;
