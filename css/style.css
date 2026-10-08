@@ -433,6 +433,7 @@
   color: var(--text);
   font-size: 25px;
   font-weight: 700;
+  touch-action: manipulation;
 }
 
 .favoritMenge input {
