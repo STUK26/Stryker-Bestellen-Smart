@@ -6,13 +6,11 @@ function vanLaden() {
         localStorage.setItem(VAN_SPEICHER, van);
       }
 
-      const footerVan = document.getElementById('footerVan');
-
-      if (footerVan) {
-        footerVan.textContent = van || 'VAN nicht gesetzt';
-        const startVan=document.getElementById('startVan');
-        if(startVan) startVan.textContent=van || 'VAN nicht gesetzt';
-      }
+      const vanText = van || 'VAN nicht gesetzt';
+      document.getElementById('footerVan').textContent = vanText;
+      document.getElementById('settingsVan').textContent = vanText;
+      const startVan = document.getElementById('startVan');
+      if (startVan) startVan.textContent = vanText;
     }
 
 
@@ -39,8 +37,7 @@ function einstellungenOeffnen() {
       });
 
       document.getElementById('einstellungenVan').value = vanHolen();
-      document.getElementById('settingsVanStatus').textContent =
-  (vanHolen() || 'VAN nicht gesetzt') + ' • Version 0.8';
+      vanLaden();
       
       document.getElementById('ccAktiv').checked =
         localStorage.getItem(CC_AKTIV_SPEICHER) === 'true';
