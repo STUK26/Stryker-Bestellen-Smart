@@ -156,7 +156,7 @@ function artikelAufnehmen(quelle) {
           '<h3>Neuer Artikel</h3>' +
           '<p>Artikelnummer: ' + artikelnummer + '</p>' +
           '<input type="text" id="neueBezeichnung" placeholder="Bezeichnung" autocomplete="off">' +
-          '<p><button onclick="neuenArtikelVorschlagen(\'' + artikelnummer + '\', \'\')">Artikel vorschlagen</button></p>';
+         '<p><button class="scanMain" onclick="neuenArtikelVorschlagen(\'' + artikelnummer + '\', \'\')">Artikel vorschlagen</button></p>';
         document.getElementById('neueBezeichnung').focus();
         return;
       }
