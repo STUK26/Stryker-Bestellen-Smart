@@ -339,3 +339,6 @@
   line-height:normal;
   margin-top:24px;
 }
+#cameraBox #scanErgebnis > p{
+  text-align:center;
+}
