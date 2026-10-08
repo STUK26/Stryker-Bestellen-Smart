@@ -78,8 +78,8 @@
   min-height:24px !important;
   text-align:center;
   color:var(--y);
-  font-size:15px;
-  font-weight:650;
+  font-size:20px;
+  font-weight:800;
 }
 #cameraBox #scanTrigger,
 #cameraBox #torchBtn{
@@ -90,8 +90,8 @@
   border-radius:15px;
   background:var(--panel);
   color:var(--text);
-  font-size:15px;
-  font-weight:650;
+  font-size:20px;
+  font-weight:800;
   display:flex;
   align-items:center;
   justify-content:center;
