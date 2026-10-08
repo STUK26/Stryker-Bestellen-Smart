@@ -107,7 +107,12 @@
 #cameraBox #torchBtn .uiIcon{width:24px;height:24px}
 
 /* Manuelle Eingabe – nur diese Seite */
-#manuelleEingabe h2{color:var(--y);}
+#manuelleEingabe h2{
+  color:var(--y);
+  font-size:16px;
+  font-weight:800;
+  text-align:center;
+}
 #manuelleEingabe #manuellSuchenBtn{
   width:100%;
   min-height:62px;
