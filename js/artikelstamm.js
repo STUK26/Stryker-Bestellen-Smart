@@ -172,7 +172,7 @@ function artikelAufnehmen(quelle) {
         'type="text" ' +
         'id="neueArtikelnummer" ' +
         'placeholder="Artikelnummer" ' +
-        'autocomplete="off">' +
+        'autocomplete="off" inputmode="numeric">' +
 
         '<p>' +
 
