@@ -53,17 +53,22 @@
 <div id="bestellungAnsicht" style="display:none"><p><button type="button" onclick="bestellungSchliessen()">← Zurück</button></p><h2>Bestellung</h2><div id="bestellliste">Noch keine Artikel in der Bestellung.</div><p><button onclick="bestellungInOutlook()">In Outlook öffnen</button> <button onclick="neueBestellung()">Neue Bestellung</button></p></div>
 <div id="favoritenAnsicht" style="display:none;">
   <div class="favoritenInhalt">
-    <button type="button" class="favoritenZurueck"
-      onclick="favoritenSchliessen()">← Zurück</button>
+   <button type="button" class="overlayZurueck"
+  onclick="favoritenSchliessen()">← Zurück</button>
 
     <h2 class="favoritenTitel">⭐ Favoriten</h2>
 
     <div id="favoritenListe"></div>
 
-    <button type="button" class="favoritenBestellButton"
-      onclick="favoritenZurBestellung()">
-      🛒 Zur Bestellung hinzufügen
-    </button>
+   <button type="button" class="favoritenBestellButton"
+  onclick="favoritenZurBestellung()">
+  <svg class="uiIcon favoritenWarenkorbIcon" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="9" cy="21" r="1"/>
+    <circle cx="20" cy="21" r="1"/>
+    <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/>
+  </svg>
+  <span>Zur Bestellung hinzufügen</span>
+</button>
   </div>
 </div>
 <div id="verlaufAnsicht" style="display:none;">
