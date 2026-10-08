@@ -50,7 +50,7 @@ function artikelSuchen(quelle = 'manuell') {
           '<span id="favoritStern"></span>' +
           '</div>' +
 
-          '<button onclick="zurBestellung()">' +
+          '<button type="button" class="bestellButton" onclick="zurBestellung()">' +
 '<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true">' +
 '<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/>' +
 '</svg><span>Zur Bestellung</span></button>';
@@ -376,8 +376,8 @@ function vorschlagAlsBestellartikelAnzeigen(
         'style="width:60px;">' +
         '</p>' +
 
-        '<button type="button" id="vorschlagZurBestellungBtn" onclick="zurBestellung()">' +
-        '<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>' +
+        '<button type="button" class="bestellButton" onclick="zurBestellung()">' +
+        '<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>' +
         '<span>Zur Bestellung</span>' +
         '</button>';
     }
