@@ -1,3 +1,5 @@
+const APP_VERSION = "1.1.0";
+
 const API_URL =
       'https://script.google.com/macros/s/AKfycbx9oXcfdmay6RtCI22A18t2TNGghcccYvSlBJ5pu0_E5E2jfSknkWMBqQAUFEhkm3Pv-w/exec';
 
@@ -127,6 +129,8 @@ function istMobil() {
 } 
   
 
+    document.getElementById("footerVersion").textContent = APP_VERSION;
+    document.getElementById("settingsVersion").textContent = APP_VERSION;
     vanLaden();
 bestellungLaden();
 verlaufAnzeigen();
