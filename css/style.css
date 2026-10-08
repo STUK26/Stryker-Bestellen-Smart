@@ -121,8 +121,8 @@
   border-radius:15px;
   background:var(--panel);
   color:var(--text);
-  font-size:15px;
-  font-weight:650;
+  font-size:20px;
+  font-weight:800;
   display:flex;
   align-items:center;
   justify-content:center;
