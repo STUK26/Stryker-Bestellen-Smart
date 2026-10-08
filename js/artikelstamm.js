@@ -84,10 +84,14 @@ function artikelSuchen(quelle = 'manuell') {
 
     }
 
+function artikelStatusSetzen(text) {
+  document.getElementById('status').textContent = text;
+  document.getElementById('settingsArtikelStatus').textContent = text;
+}
+
 async function artikelLaden() {
       
-document.getElementById('settingsArtikelStatus').textContent =
-  'Artikelstamm wird geladen...';
+artikelStatusSetzen('Artikelstamm wird geladen...');
       
       const gespeicherterArtikelstamm =
   localStorage.getItem('strykerBestellenSmart_artikelstamm');
@@ -115,29 +119,17 @@ if (gespeicherterArtikelstamm) {
   JSON.stringify(artikelstamm)
 );
 
-        document.getElementById('status').textContent =
-          artikelstamm.length + ' Datensätze geladen.';
-
-            document.getElementById('settingsArtikelStatus').textContent =
-  artikelstamm.length + ' Datensätze geladen.';
+        artikelStatusSetzen(artikelstamm.length + ' Datensätze geladen.');
 
       } catch (fehler) {
 
   if (artikelstamm.length > 0) {
 
-    document.getElementById('status').textContent =
-      artikelstamm.length + ' Datensätze aus lokalem Speicher geladen.';
-
-    document.getElementById('settingsArtikelStatus').textContent =
-      artikelstamm.length + ' Datensätze aus lokalem Speicher geladen.';
+    artikelStatusSetzen(artikelstamm.length + ' Datensätze aus lokalem Speicher geladen.');
 
   } else {
 
-   document.getElementById('status').textContent =
-  'Artikelstamm nicht verfügbar. Bitte Internetverbindung prüfen.';
-
-document.getElementById('settingsArtikelStatus').textContent =
-  'Artikelstamm nicht verfügbar. Bitte Internetverbindung prüfen.';
+   artikelStatusSetzen('Artikelstamm nicht verfügbar. Bitte Internetverbindung prüfen.');
 
   }
 
