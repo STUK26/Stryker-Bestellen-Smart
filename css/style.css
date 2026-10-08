@@ -472,3 +472,35 @@
   fill: none;
   margin: 0;
 }
+
+
+/* Bestellansicht: bestehende Favoriten-Karten und Mengensteuerung wiederverwenden */
+#bestellungAnsicht {
+  min-height:100vh;
+  padding:24px 18px;
+  background:var(--bg);
+  color:var(--text);
+}
+.bestellungInhalt { width:min(100%,460px); margin:0 auto; }
+.bestellungUebersicht {
+  display:flex; justify-content:space-between; gap:12px; align-items:center;
+  margin:0 0 12px; font-size:14px; color:var(--muted);
+}
+#bestellungPositionen { color:var(--y); font-weight:700; white-space:nowrap; }
+#bestellliste { display:grid; gap:12px; }
+.bestellungLeer { padding:18px 0; color:var(--muted); }
+.bestellungEntfernen {
+  flex-shrink:0; width:48px; height:48px;
+  border:1px solid var(--line); border-radius:12px;
+  background:var(--bg); color:#f28b82;
+  display:flex; align-items:center; justify-content:center;
+}
+.bestellungEntfernen .uiIcon { width:24px; height:24px; }
+.bestellungAktionen { margin-top:26px; display:grid; gap:10px; }
+.bestellungAktionen .actionButton { margin-top:0; }
+#bestellungAnsicht .bestellungAktionen .bestellButton {
+  width:100%; min-height:70px; margin:0; padding:12px;
+  border:0; border-radius:17px; background:var(--y);
+  color:#101010; font-size:20px; font-weight:800;
+  display:flex; align-items:center; justify-content:center; gap:10px;
+}
