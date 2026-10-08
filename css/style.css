@@ -470,6 +470,17 @@
   border-radius: 17px;
   background: var(--y);
   color: #101010;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 800;
+  display: flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+}
+.favoritenBestellButton .favoritenWarenkorbIcon {
+  width: 26px;
+  height: 26px;
+  stroke: #fff;
+  stroke-width: 2;
+  fill: none;
 }
