@@ -362,6 +362,8 @@
   margin: 30px 0 24px;
   font-size: 30px;
   font-weight: 800;
+  color: var(--y);
+  text-align: center;
 }
 
 #favoritenListe {
