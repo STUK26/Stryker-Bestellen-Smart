@@ -73,18 +73,22 @@ function favoritenRendern() {
   }
 
   ziel.innerHTML = liste.map((f, i) =>
-    '<div style="border-bottom:1px solid #ccc;padding:10px 0;">' +
-      '<label>' +
-        '<input type="checkbox" class="favCheck" data-index="' + i + '"> ' +
-        '<strong>' + escapeHtml(String(f.artikelnummer)) + '</strong><br>' +
-        escapeHtml(String(f.bezeichnung || '')) +
-      '</label>' +
-      '<div style="margin-top:6px;">' +
-        'Menge: ' +
-        '<button type="button" onclick="favoritMengeAendern(' + i + ',-1)">−</button> ' +
-        '<input id="favMenge' + i + '" type="number" min="1" value="1" style="width:55px;text-align:center;"> ' +
-        '<button type="button" onclick="favoritMengeAendern(' + i + ',1)">+</button> ' +
-        '<button type="button" onclick="favoritEntfernen(' + i + ')">⭐ entfernen</button>' +
+    '<div class="favoritKarte">' +
+      '<div class="favoritKopf">' +
+        '<input type="checkbox" class="favCheck" data-index="' + i + '">' +
+        '<div class="favoritInfo">' +
+          '<strong>' + escapeHtml(String(f.artikelnummer)) + '</strong>' +
+          '<div>' + escapeHtml(String(f.bezeichnung || '')) + '</div>' +
+        '</div>' +
+        '<button type="button" class="favoritEntfernen" ' +
+          'onclick="favoritEntfernen(' + i + ')" ' +
+          'aria-label="Favorit entfernen" title="Favorit entfernen">⭐</button>' +
+      '</div>' +
+      '<div class="favoritMenge">' +
+        '<span>Menge:</span>' +
+        '<button type="button" onclick="favoritMengeAendern(' + i + ',-1)">−</button>' +
+        '<input id="favMenge' + i + '" type="number" min="1" max="999" value="1">' +
+        '<button type="button" onclick="favoritMengeAendern(' + i + ',1)">+</button>' +
       '</div>' +
     '</div>'
   ).join('');
