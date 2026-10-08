@@ -258,22 +258,6 @@
   margin:0 !important;
 }
 
-#vorschlagZurBestellungBtn{
-  width:100%;
-  min-height:62px;
-  margin-top:10px;
- border:0;
-  border-radius:15px;
-  background:var(--y);
- color:#101010;
-  font-size:20px;
-  font-weight:800;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:9px;
-}
-#vorschlagZurBestellungBtn .uiIcon{width:24px;height:24px;}
 
 /* Standard-Aktionsbutton – dunkel */
 .actionButton{
@@ -461,7 +445,8 @@
   text-align: center;
 }
 
-.favoritenBestellButton {
+/* Einheitlicher Bestellbutton: Scanner, manuelle Suche und Favoriten */
+:is(#cameraBox #scanErgebnis, #manuelleEingabe, #favoritenAnsicht) button.bestellButton {
   width: 100%;
   min-height: 70px;
   margin-top: 18px;
@@ -473,14 +458,15 @@
   font-size: 20px;
   font-weight: 800;
   display: flex;
-align-items: center;
-justify-content: center;
-gap: 10px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
-.favoritenBestellButton .favoritenWarenkorbIcon {
+.bestellButton .uiIcon {
   width: 26px;
   height: 26px;
-  stroke: #101010;
+  stroke: currentColor;
   stroke-width: 2;
   fill: none;
+  margin: 0;
 }
