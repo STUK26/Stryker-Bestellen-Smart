@@ -162,7 +162,7 @@ function artikelAufnehmen(quelle) {
       }
 
       ergebnis.innerHTML =
-        '<h3>Neuen Artikel aufnehmen</h3>' +
+        '<h3 class="neuerArtikelTitel">Neuen Artikel aufnehmen</h3>' +
 
         '<p>Barcode: ' +
         unbekannterBarcode +
