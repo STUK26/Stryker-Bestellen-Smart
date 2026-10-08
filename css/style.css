@@ -342,3 +342,6 @@
 #cameraBox #scanErgebnis > p{
   text-align:center;
 }
+#cameraBox #scanErgebnis h3.neuerArtikelTitel{
+  color:var(--text);
+}
