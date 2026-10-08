@@ -172,64 +172,49 @@ function bestellungLaden() {
      */
 
     function bestellungAnzeigen() {
-
       bestellungButtonAktualisieren();
-
-      const bereich =
-        document.getElementById('bestellliste');
-
-      if (bestellung.length === 0) {
-
-        bereich.innerHTML =
-          'Noch keine Artikel in der Bestellung.';
-
-        return;
-
+      const bereich = document.getElementById('bestellliste');
+      const positionen = document.getElementById('bestellungPositionen');
+      if (positionen) {
+        positionen.textContent = bestellung.length + (bestellung.length === 1 ? ' Position' : ' Positionen');
       }
-
-      let html = '';
-
-      bestellung.forEach((item, index) => {
-
-        html +=
-          '<div style="margin-bottom:15px;">' +
-
-          '<strong>' +
-          item.artikelnummer +
-          '</strong> – ' +
-          item.bezeichnung +
-
-          '<br><br>' +
-
-          'Menge: ' +
-
-          '<input ' +
-          'type="number" ' +
-          'min="1" ' +
-          'value="' +
-          item.menge +
-          '" ' +
-          'style="width:60px;" ' +
-          'onchange="mengeAendern(' +
-          index +
-          ', this.value)">' +
-
-          ' ' +
-
-          '<button onclick="positionLoeschen(' +
-          index +
-          ')">' +
-          'Löschen' +
-          '</button>' +
-
-          '</div>';
-
-      });
-
-      bereich.innerHTML = html;
-
+      if (bestellung.length === 0) {
+        bereich.innerHTML = '<p class="bestellungLeer">Noch keine Artikel in der Bestellung.</p>';
+        return;
+      }
+      bereich.innerHTML = bestellung.map((item, index) =>
+        '<div class="favoritKarte bestellungKarte">' +
+          '<div class="favoritKopf">' +
+            '<div class="favoritInfo">' +
+              '<strong>' + escapeHtml(item.artikelnummer) + '</strong>' +
+              '<div>' + escapeHtml(item.bezeichnung || '') + '</div>' +
+            '</div>' +
+            '<button type="button" class="bestellungEntfernen" onclick="positionLoeschen(' + index + ')" aria-label="Position löschen" title="Position löschen">' +
+              '<svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 10v7M14 10v7"/></svg>' +
+            '</button>' +
+          '</div>' +
+          '<div class="favoritMenge">' +
+            '<span>Menge:</span>' +
+            '<button type="button" onclick="bestellungMengeSchritt(' + index + ',-1)">−</button>' +
+            '<input type="number" min="1" max="999" inputmode="numeric" aria-label="Menge für Artikel ' + escapeHtml(item.artikelnummer) + '" value="' + item.menge + '" onchange="mengeAendern(' + index + ',this.value)">' +
+            '<button type="button" onclick="bestellungMengeSchritt(' + index + ',1)">+</button>' +
+          '</div>' +
+        '</div>'
+      ).join('');
     }
 
+    function bestellungMengeSchritt(index, delta) {
+      if (!bestellung[index]) return;
+      const neueMenge = bestellung[index].menge + delta;
+      if (neueMenge < 1 || neueMenge > 999) return;
+      mengeAendern(index, neueMenge);
+      bestellungAnzeigen();
+    }
+
+    function bestellungWeitereScannen() {
+      bestellungSchliessen();
+      kameraOeffnen();
+    }
 
     function mengeAendern(index, neueMenge) {
 
