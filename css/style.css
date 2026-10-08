@@ -345,3 +345,6 @@
 #cameraBox #scanErgebnis h3.neuerArtikelTitel{
   color:var(--text);
 }
+#ergebnis > p {
+  text-align: center;
+}
