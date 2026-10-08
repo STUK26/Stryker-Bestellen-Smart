@@ -50,7 +50,28 @@
   <div id="verlaufButtonBereich" style="display:none"></div><div id="einstellungenButtonBereich" style="display:none"></div>
   <div id="appFooter"><div><span id="footerVan">VAN nicht gesetzt</span> • Version 0.8</div><div id="status">Artikelstamm wird geladen...</div></div>
 </div>
-<div id="bestellungAnsicht" style="display:none"><p><button type="button" onclick="bestellungSchliessen()">← Zurück</button></p><h2>Bestellung</h2><div id="bestellliste">Noch keine Artikel in der Bestellung.</div><p><button onclick="bestellungInOutlook()">In Outlook öffnen</button> <button onclick="neueBestellung()">Neue Bestellung</button></p></div>
+<div id="bestellungAnsicht" style="display:none">
+  <div class="bestellungInhalt">
+    <button type="button" class="overlayZurueck" onclick="bestellungSchliessen()">← Zurück</button>
+    <h2 class="favoritenTitel">🛒 Bestellung 🛒</h2>
+    <div class="bestellungUebersicht">
+      <span>Artikel in deiner Bestellung</span>
+      <span id="bestellungPositionen">0 Positionen</span>
+    </div>
+    <div id="bestellliste">Noch keine Artikel in der Bestellung.</div>
+    <div class="bestellungAktionen">
+      <button type="button" class="actionButton" onclick="bestellungWeitereScannen()">
+        <svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M7 10v4M10 9v6M13 9v6M16 10v4"/></svg>
+        Weitere Artikel scannen
+      </button>
+      <button type="button" class="bestellButton" onclick="bestellungInOutlook()">
+        <svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m3 6 9 7 9-7"/></svg>
+        In Outlook öffnen
+      </button>
+      <button type="button" class="actionButton" onclick="neueBestellung()">Neue Bestellung</button>
+    </div>
+  </div>
+</div>
 <div id="favoritenAnsicht" style="display:none;">
   <div class="favoritenInhalt">
    <button type="button" class="overlayZurueck"
