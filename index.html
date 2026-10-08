@@ -30,14 +30,17 @@
       <div id="ergebnis"></div>
     </div>
   </div>
+  
   <div id="cameraBox" class="eingabeOverlay">
     <div class="eingabeOverlayInnen">
+    
       <button type="button" class="overlayZurueck" onclick="kameraSchliessen()">← Zurück</button>
+      <div id="scanStatus" style="min-height:22px;margin-top:6px"></div>
       <div style="position:relative;width:100%;height:205px;background:#000;overflow:hidden">
         <video id="video" playsinline muted style="width:100%;height:205px;object-fit:cover;background:#000"></video>
         <div id="scanRahmen" style="position:absolute;left:8%;right:8%;top:31%;height:38%;border:3px solid #ffd400;box-sizing:border-box;pointer-events:none"></div>
       </div>
-      <div id="scanStatus" style="min-height:22px;margin-top:6px"></div>
+      
       <button id="scanTrigger" type="button"><svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M7 10v4M10 9v6M13 9v6M16 10v4"/></svg><span>SCANNEN</span></button>
       <button id="torchBtn" type="button" onclick="lichtUmschalten()"><svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M8.2 14.5A6 6 0 1 1 15.8 14.5C14.7 15.3 14 16.2 14 17h-4c0-.8-.7-1.7-1.8-2.5Z"/></svg><span>LICHT</span></button>
       <div id="scanErgebnis"></div>
