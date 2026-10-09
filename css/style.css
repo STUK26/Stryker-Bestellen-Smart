@@ -506,3 +506,21 @@
   color:#101010; font-size:20px; font-weight:800;
   display:flex; align-items:center; justify-content:center; gap:10px;
 }
+
+/* Bestellverlauf: bestehende Karten- und Buttonstile wiederverwenden */
+#verlaufAnsicht{min-height:100vh;padding:24px 18px;background:var(--bg);color:var(--text)}
+.verlaufInhalt{width:min(100%,460px);margin:0 auto}
+.verlaufHinweis,.verlaufStatus{color:var(--muted);font-size:14px;line-height:1.5}
+#verlauf{display:grid;gap:12px}
+.verlaufKarte{display:grid;gap:12px}
+.verlaufKopf{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.verlaufDatum{font-weight:800;font-size:17px}
+.verlaufArtikel{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.verlaufArtikel li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;line-height:1.45}
+.verlaufMenge{font-weight:800;white-space:nowrap;color:var(--y)}
+.verlaufArtikelText{min-width:0;overflow-wrap:anywhere}
+.verlaufArtikelText strong{display:block}
+.verlaufAktionen{display:flex;align-items:center;gap:10px}
+.verlaufAktionen .secondaryAction{flex:1;min-height:48px;padding:8px;font-size:14px}
+.verlaufAktionen .bestellungEntfernen{width:48px;height:48px}
+.verlaufAlleLoeschen{width:100%;margin-top:20px;padding:10px;color:#f28b82}
