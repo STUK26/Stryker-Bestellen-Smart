@@ -524,26 +524,3 @@
 .verlaufAktionen .secondaryAction{flex:1;min-height:48px;padding:8px;font-size:14px}
 .verlaufAktionen .bestellungEntfernen{width:48px;height:48px}
 .verlaufAlleLoeschen{width:100%;margin-top:20px;padding:10px;color:#f28b82}
-
-/* Verhindert Pull-to-Refresh beim Herunterziehen */
-html, body {
-  overscroll-behavior-y: none;
-}
-
-
-/* GitHub-Test: App scrollt unabhängig vom Safari-Dokument. */
-html, body {
-  height: 100%;
-  overflow: hidden;
-}
-#appScrollViewport {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  height: 100dvh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior-y: contain;
-  -webkit-overflow-scrolling: touch;
-}
