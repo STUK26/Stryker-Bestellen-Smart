@@ -44,7 +44,7 @@ function einstellungenOeffnen() {
       document.getElementById('ccEmail').value =
         localStorage.getItem(CC_EMAIL_SPEICHER) || '';
 
-      window.scrollTo(0, 0);
+      document.getElementById("appScrollViewport").scrollTo(0, 0);
     }
 
 
@@ -62,7 +62,7 @@ function einstellungenSchliessen() {
 
       document.getElementById('einstellungenAnsicht').style.display = 'none';
       document.getElementById('einstellungenButtonBereich').style.display = 'block';
-      window.scrollTo(0, 0);
+      document.getElementById("appScrollViewport").scrollTo(0, 0);
     }
 
 
