@@ -27,7 +27,11 @@
     <div class="eingabeOverlayInnen">
       <button type="button" class="overlayZurueck" onclick="manuelleEingabeSchliessen()">← Zurück</button>
       <h2>Artikelnummer eingeben</h2>
-      <input type="text" id="suche" placeholder="Artikelnummer" autocomplete="off" inputmode="numeric">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <input type="text" id="suche" placeholder="Artikelnummer" autocomplete="off" inputmode="numeric" style="flex:1;min-width:0;">
+        <button type="button" id="tastaturWechsel" onclick="tastaturModusWechseln()" style="flex:0 0 auto;padding:10px;" aria-label="Auf Buchstabentastatur wechseln">ABC</button>
+      </div>
+      <div id="tastaturHinweis" style="font-size:12px;margin-top:4px;display:none;">Zum Öffnen der gewählten Tastatur erneut ins Eingabefeld tippen.</div>
       <button type="button" id="manuellSuchenBtn" onclick="artikelSuchen()"><svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg><span>Suchen</span></button>
       <div id="ergebnis"></div>
     </div>
