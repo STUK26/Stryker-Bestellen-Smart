@@ -14,7 +14,7 @@ function verlaufOeffnen() {
   });
 
   verlaufAnzeigen();
-  document.getElementById("appScrollViewport").scrollTo(0, 0);
+  window.scrollTo(0, 0);
 }
 
 
@@ -32,7 +32,7 @@ function verlaufSchliessen() {
 
   document.getElementById('verlaufAnsicht').style.display = 'none';
   document.getElementById('verlaufButtonBereich').style.display = 'block';
-  document.getElementById("appScrollViewport").scrollTo(0, 0);
+  window.scrollTo(0, 0);
 }
 
 

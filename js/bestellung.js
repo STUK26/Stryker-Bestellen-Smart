@@ -133,7 +133,7 @@ function bestellungLaden() {
       });
 
       bestellungAnzeigen();
-      document.getElementById("appScrollViewport").scrollTo(0, 0);
+      window.scrollTo(0, 0);
     }
 
 
@@ -152,7 +152,7 @@ function bestellungLaden() {
       document.getElementById('bestellungAnsicht').style.display = 'none';
       document.getElementById('bestellungButtonBereich').style.display = 'block';
       bestellungButtonAktualisieren();
-      document.getElementById("appScrollViewport").scrollTo(0, 0);
+      window.scrollTo(0, 0);
     }
 
 

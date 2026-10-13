@@ -51,7 +51,7 @@ function favoritenOeffnen() {
   });
   document.getElementById('favoritenAnsicht').style.display = 'block';
   favoritenRendern();
-  document.getElementById("appScrollViewport").scrollTo(0, 0);
+  window.scrollTo(0, 0);
 }
 function favoritenSchliessen() {
   Array.from(document.body.children).forEach(function(element) {
@@ -61,7 +61,7 @@ function favoritenSchliessen() {
     }
   });
   document.getElementById('favoritenAnsicht').style.display = 'none';
-  document.getElementById("appScrollViewport").scrollTo(0, 0);
+  window.scrollTo(0, 0);
 }
 function favoritenRendern() {
   const ziel = document.getElementById('favoritenListe');
